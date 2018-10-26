@@ -4,6 +4,7 @@ import com.sandstorm.internshop.entity.Customer;
 import com.sandstorm.internshop.services.CustomerServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,14 +14,17 @@ import java.util.List;
 public class CustomerController {
 
     private final CustomerServiceImpl customerService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public CustomerController(CustomerServiceImpl customerService) {
+    public CustomerController(CustomerServiceImpl customerService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.customerService = customerService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @PostMapping
     public ResponseEntity<Customer> create(@RequestBody Customer customer) {
-       return ResponseEntity.status(HttpStatus.CREATED).body(customerService.createCustomer(customer));
+        customer.setPassword(bCryptPasswordEncoder.encode(customer.getPassword()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.createCustomer(customer));
     }
 
     @GetMapping
