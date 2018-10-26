@@ -1,0 +1,137 @@
+package com.sandstorm.internshop.controller;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sandstorm.internshop.entity.Customer;
+import com.sandstorm.internshop.exception.CustomerNotFound;
+import com.sandstorm.internshop.services.CustomerService;
+import com.sandstorm.internshop.services.CustomerServiceImpl;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.Arrays;
+
+import static org.hamcrest.core.Is.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@RunWith(SpringRunner.class)
+@WebMvcTest(CustomerController.class)
+public class CustomerControllerTest {
+
+    @Autowired
+    MockMvc mockMvc;
+
+    @MockBean
+    CustomerServiceImpl customerService;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
+//    @Before
+//    public void setUp() {
+//
+//    }
+
+    @Test
+    public void createUserSuccessfully() throws Exception {
+        // Arrange
+        Customer newCustomer = new Customer();
+        newCustomer.setName("paiiza");
+        newCustomer.setUsername("test");
+        newCustomer.setPassword("1234");
+        when(customerService.createCustomer(any(Customer.class))).thenReturn(newCustomer);
+
+        // Act
+        ResultActions result = mockMvc.perform(post("/api/v1/customers")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(newCustomer)));
+
+        // Assert
+        result.andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name", is("paiiza")))
+                .andExpect(jsonPath("$.username", is("test")))
+                .andExpect(jsonPath("$.password", is("1234")));
+        verify(customerService, times(1)).createCustomer(newCustomer);
+    }
+
+//    public void failCreateUser() throws Exception {
+//        // Arange
+//        Customer newCustomer = new Customer();
+//        newCustomer.setName(null);
+//        newCustomer.setUsername(null);
+//
+//    }
+
+    @Test
+    public void getAllUserSuccessFully() throws Exception {
+        // Arrange
+        Customer customer1 = new Customer();
+        customer1.setName("paiiza");
+        customer1.setUsername("test");
+        customer1.setPassword("1234");
+        Customer customer2 = new Customer();
+        customer2.setName("trongza");
+        customer2.setUsername("za");
+        customer2.setPassword("5678");
+        when(customerService.getAllCustomer()).thenReturn(Arrays.asList(customer1, customer2));
+
+        // Act
+        ResultActions result = mockMvc.perform(get("/api/v1/customers"));
+
+        // Assert
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name", is("paiiza")))
+                .andExpect(jsonPath("$[0].username", is("test")))
+                .andExpect(jsonPath("$[0].password", is("1234")))
+                .andExpect(jsonPath("$[1].name", is("trongza")))
+                .andExpect(jsonPath("$[1].username", is("za")))
+                .andExpect(jsonPath("$[1].password", is("5678")));
+        verify(customerService, times(1)).getAllCustomer();
+    }
+
+    @Test
+    public void getUserSuccessfully() throws Exception {
+        // Arrange
+        Customer getCustomer = new Customer();
+        getCustomer.setName("GET");
+        getCustomer.setUsername("GETUSER");
+        getCustomer.setPassword("GETPASS");
+        when(customerService.getCustomer(1L)).thenReturn(getCustomer);
+
+        // Act
+        ResultActions result = mockMvc.perform(get("/api/v1/customers/1"));
+
+        // Assert
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("GET")))
+                .andExpect(jsonPath("$.username", is("GETUSER")))
+                .andExpect(jsonPath("$.password", is("GETPASS")));
+        verify(customerService, times(1)).getCustomer(1L);
+    }
+
+    @Test
+    public void getUserFailed() throws Exception {
+        // Arrange
+        when(customerService.getCustomer(1L)).thenThrow(new CustomerNotFound("Test"));
+
+        // Act
+        ResultActions result = mockMvc.perform(get("/api/v1/customers/1"));
+
+        // Assert
+        result.andExpect(status().isNotFound());
+        verify(customerService, times(1)).getCustomer(1L);
+    }
+}
