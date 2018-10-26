@@ -3,11 +3,11 @@ package com.sandstorm.internshop.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sandstorm.internshop.entity.Customer;
 import com.sandstorm.internshop.exception.CustomerNotFound;
-import com.sandstorm.internshop.services.CustomerService;
 import com.sandstorm.internshop.services.CustomerServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -29,6 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(CustomerController.class)
+@AutoConfigureMockMvc(secure = false)
+//@ActiveProfiles(value = "test")
 public class CustomerControllerTest {
 
     @Autowired
@@ -42,6 +44,7 @@ public class CustomerControllerTest {
 
 //    @Before
 //    public void setUp() {
+//
 //
 //    }
 
@@ -66,14 +69,6 @@ public class CustomerControllerTest {
                 .andExpect(jsonPath("$.password", is("1234")));
         verify(customerService, times(1)).createCustomer(newCustomer);
     }
-
-//    public void failCreateUser() throws Exception {
-//        // Arange
-//        Customer newCustomer = new Customer();
-//        newCustomer.setName(null);
-//        newCustomer.setUsername(null);
-//
-//    }
 
     @Test
     public void getAllUserSuccessFully() throws Exception {
@@ -109,7 +104,7 @@ public class CustomerControllerTest {
         getCustomer.setName("GET");
         getCustomer.setUsername("GETUSER");
         getCustomer.setPassword("GETPASS");
-        when(customerService.getCustomer(1L)).thenReturn(getCustomer);
+        when(customerService.getCustomer(any(Long.class))).thenReturn(getCustomer);
 
         // Act
         ResultActions result = mockMvc.perform(get("/api/v1/customers/1"));
@@ -119,19 +114,53 @@ public class CustomerControllerTest {
                 .andExpect(jsonPath("$.name", is("GET")))
                 .andExpect(jsonPath("$.username", is("GETUSER")))
                 .andExpect(jsonPath("$.password", is("GETPASS")));
-        verify(customerService, times(1)).getCustomer(1L);
+        verify(customerService, times(1)).getCustomer(any(Long.class));
     }
 
     @Test
     public void getUserFailed() throws Exception {
         // Arrange
-        when(customerService.getCustomer(1L)).thenThrow(new CustomerNotFound("Test"));
+        when(customerService.getCustomer(any(Long.class))).thenThrow(new CustomerNotFound("Test"));
 
         // Act
         ResultActions result = mockMvc.perform(get("/api/v1/customers/1"));
 
         // Assert
         result.andExpect(status().isNotFound());
-        verify(customerService, times(1)).getCustomer(1L);
+        verify(customerService, times(1)).getCustomer(any(Long.class));
+    }
+
+    @Test
+    public void getUserByUsername() throws Exception {
+        Customer getCustomer = new Customer();
+        getCustomer.setName("GET");
+        getCustomer.setUsername("GETUSER");
+        getCustomer.setPassword("GETPASS");
+        when(customerService.getCustomerByUsername("GETUSER")).thenReturn(getCustomer);
+
+
+        // Act
+        ResultActions result = mockMvc.perform(get("/api/v1/customers/find?username=GETUSER"));
+
+        // Assert
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("GET")))
+                .andExpect(jsonPath("$.username", is("GETUSER")))
+                .andExpect(jsonPath("$.password", is("GETPASS")));
+        verify(customerService, times(1)).getCustomerByUsername("GETUSER");
+    }
+
+    @Test
+    public void getUserByUsernameFailed() throws Exception {
+        // Arrange
+        when(customerService.getCustomerByUsername(any(String.class))).thenThrow(new CustomerNotFound("Test"));
+
+        // Act
+        ResultActions result = mockMvc.perform(get("/api/v1/customers/find?username=GETUSER"));
+
+        // Assert
+        result.andExpect(status().isNotFound());
+        verify(customerService, times(1)).getCustomerByUsername(any(String.class));
+
     }
 }

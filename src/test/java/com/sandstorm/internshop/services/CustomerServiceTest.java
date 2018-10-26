@@ -7,18 +7,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CustomerServiceTest {
@@ -28,9 +25,12 @@ public class CustomerServiceTest {
     @Mock
     private CustomerRepository customerRepository;
 
+    @Mock
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Before
     public void setUp() {
-        customerService = new CustomerServiceImpl(customerRepository);
+        customerService = new CustomerServiceImpl(customerRepository, bCryptPasswordEncoder);
     }
 
     @Test
@@ -45,7 +45,7 @@ public class CustomerServiceTest {
 
         assertThat(customerResponse.getName()).isEqualTo("paiiza");
         assertThat(customerResponse.getUsername()).isEqualTo("test");
-        assertThat(customerResponse.getPassword()).isEqualTo("1234");
+        assertThat(customerResponse.getPassword()).isEqualTo(bCryptPasswordEncoder.encode("1234"));
 
         verify(customerRepository, times(1)).save(newCustomer);
 //        ResultActions result = mockMvc.perform(post("/api/v1/customers")

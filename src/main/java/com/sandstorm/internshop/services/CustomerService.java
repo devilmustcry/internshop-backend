@@ -2,7 +2,6 @@ package com.sandstorm.internshop.services;
 
 import com.sandstorm.internshop.entity.Customer;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
