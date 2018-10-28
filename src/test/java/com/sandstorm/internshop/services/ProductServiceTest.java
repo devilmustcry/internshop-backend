@@ -55,7 +55,7 @@ public class ProductServiceTest {
         product1.setPrice(1.0);
         Product product2 = new Product();
         product2.setName("trongza");
-        product2.setPrice(1.0);
+        product2.setPrice(2.0);
         when(productRepository.findAll()).thenReturn(Arrays.asList(product1, product2));
 
         List<Product> productListResponse = productService.getAllProduct();

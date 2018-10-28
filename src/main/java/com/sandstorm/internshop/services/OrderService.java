@@ -1,8 +1,7 @@
 package com.sandstorm.internshop.services;
 
-import com.sandstorm.internshop.Wrapper.CreateOrderRequest;
+import com.sandstorm.internshop.Wrapper.Order.CreateOrderRequest;
 import com.sandstorm.internshop.entity.Order;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

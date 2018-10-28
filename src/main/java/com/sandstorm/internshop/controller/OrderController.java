@@ -1,12 +1,12 @@
 package com.sandstorm.internshop.controller;
 
-import com.sandstorm.internshop.Wrapper.CreateOrderRequest;
+import com.sandstorm.internshop.Wrapper.Base.BaseResponse;
+import com.sandstorm.internshop.Wrapper.Order.CreateOrderRequest;
+import com.sandstorm.internshop.Wrapper.Order.CreateOrderResponse;
 import com.sandstorm.internshop.entity.Order;
 import com.sandstorm.internshop.entity.Product;
-import com.sandstorm.internshop.services.CustomerService;
 import com.sandstorm.internshop.services.OrderProductService;
 import com.sandstorm.internshop.services.OrderService;
-import com.sandstorm.internshop.services.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,21 +24,24 @@ public class OrderController {
 
     private final OrderProductService orderProductService;
 
-    private final ProductService productService;
-
-    public OrderController(OrderService orderService, OrderProductService orderProductService, ProductService productService) {
+    public OrderController(OrderService orderService, OrderProductService orderProductService) {
         this.orderService = orderService;
         this.orderProductService = orderProductService;
-        this.productService = productService;
     }
 
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody CreateOrderRequest orderRequest) {
+    public ResponseEntity<BaseResponse> createOrder(@RequestBody CreateOrderRequest orderRequest) {
         List<CreateOrderRequest.ProductListRequest> productListRequests = orderRequest.getProductListRequestList();
 
         Order newOrder = orderService.createOrder(orderRequest);
-        orderProductService.createOrderProduct(newOrder, productListRequests);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newOrder);
+        Double netPrice = orderProductService.createOrderProduct(newOrder, productListRequests);
+
+        BaseResponse<CreateOrderResponse> response = new CreateOrderResponse();
+        ((CreateOrderResponse) response).setNetPrice(netPrice);
+        response.setMessage("Create Order Successfully");
+        response.setResponseStatus(HttpStatus.CREATED.value());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping

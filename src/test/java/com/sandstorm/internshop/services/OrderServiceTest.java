@@ -1,5 +1,6 @@
 package com.sandstorm.internshop.services;
 
+import com.sandstorm.internshop.Wrapper.Order.CreateOrderRequest;
 import com.sandstorm.internshop.entity.Customer;
 import com.sandstorm.internshop.entity.Order;
 import com.sandstorm.internshop.repository.OrderRepository;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,11 +28,14 @@ public class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
 
+    @Mock
+    private CustomerService customerService;
+
     private Customer testCustomer;
 
     @Before
     public void setUp() throws Exception {
-//         orderService = new OrderServiceImpl(orderRepository, customerService);
+         orderService = new OrderServiceImpl(orderRepository, customerService);
          testCustomer = new Customer();
          testCustomer.setId(1L);
          testCustomer.setUsername("Test");
@@ -40,15 +45,28 @@ public class OrderServiceTest {
 
     @Test
     public void createOrderSuccessfully() {
+        CreateOrderRequest.ProductListRequest product1 = new CreateOrderRequest.ProductListRequest();
+        product1.setAmount(1);
+        product1.setProductId(1L);
+
+        CreateOrderRequest.ProductListRequest product2 = new CreateOrderRequest.ProductListRequest();
+        product2.setAmount(1);
+        product2.setProductId(2L);
+
+        List<CreateOrderRequest.ProductListRequest> productList = Arrays.asList(product1, product2);
+        CreateOrderRequest request = new CreateOrderRequest();
+        request.setCustomerId(1L);
+        request.setProductListRequestList(productList);
+
         Order order = new Order();
 //        order.setNetPrice(9999);
         order.setCustomer(testCustomer);
         when(orderRepository.save(any(Order.class))).thenReturn(order);
+        when(customerService.getCustomer(any(Long.class))).thenReturn(testCustomer);
 
-//        Order responseOrder = orderService.createOrder(order);
+        Order responseOrder = orderService.createOrder(request);
 
-//        assertThat(responseOrder.getNetPrice()).isEqualTo(9999.0);
-//        assertThat(responseOrder.getCustomer()).isEqualToComparingFieldByField(testCustomer);
+        assertThat(responseOrder.getCustomer()).isEqualToComparingFieldByField(testCustomer);
         verify(orderRepository, times(1)).save(any(Order.class));
 
     }

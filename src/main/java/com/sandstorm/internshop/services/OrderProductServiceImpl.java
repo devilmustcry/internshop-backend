@@ -1,7 +1,7 @@
 package com.sandstorm.internshop.services;
 
 
-import com.sandstorm.internshop.Wrapper.CreateOrderRequest;
+import com.sandstorm.internshop.Wrapper.Order.CreateOrderRequest;
 import com.sandstorm.internshop.entity.Order;
 import com.sandstorm.internshop.entity.OrderProduct;
 import com.sandstorm.internshop.entity.Product;
@@ -23,16 +23,19 @@ public class OrderProductServiceImpl implements OrderProductService {
     }
 
     @Override
-    public void createOrderProduct(Order order, List<CreateOrderRequest.ProductListRequest> productsOrdered) {
+    public Double createOrderProduct(Order order, List<CreateOrderRequest.ProductListRequest> productsOrdered) {
+        Double netPrice = 0.0;
         for(CreateOrderRequest.ProductListRequest productOrdered : productsOrdered) {
             OrderProduct orderProduct = new OrderProduct();
             Product product = productService.getProduct(productOrdered.getProductId());
-//            product.setId(productOrdered.getProductId());
             orderProduct.setOrder(order);
             orderProduct.setProduct(product);
             orderProduct.setAmount(productOrdered.getAmount());
-            orderProduct.setNetPrice(product.getPrice() * productOrdered.getAmount());
+            Double price = product.getPrice() * productOrdered.getAmount();
+            orderProduct.setNetPrice(price);
+            netPrice+=price;
             this.orderProductRepository.save(orderProduct);
         }
+        return netPrice;
     }
 }
