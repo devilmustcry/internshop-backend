@@ -57,26 +57,26 @@ public class OrderControllerTest {
     @Test
     public void createOrderSuccessfully() throws Exception {
         Order order = new Order();
-        order.setNetPrice(9999);
+//        order.setNetPrice(9999);
         when(customerService.getCustomer(any(Long.class))).thenReturn(testCustomer);
-        when(orderService.createOrder(any(Order.class))).thenReturn(order);
+//        when(orderService.createOrder(any(Order.class))).thenReturn(order);
 
         ResultActions result = mockMvc.perform(post("/api/v1/orders/1"));
 
         result.andExpect(status().isCreated())
                 .andExpect(jsonPath("$.netPrice", is(9999.0)));
         verify(customerService, times(1)).getCustomer(any(Long.class));
-        verify(orderService, times(1)).createOrder(any(Order.class));
+//        verify(orderService, times(1)).createOrder(any(Order.class));
     }
 
     @Test
     public void getOrderByCustomer() throws Exception {
         Order order1 = new Order();
-        order1.setNetPrice(9999);
+//        order1.setNetPrice(9999);
         order1.setCustomer(testCustomer);
         Order order2 = new Order();
         order2.setCustomer(testCustomer);
-        order2.setNetPrice(1234);
+//        order2.setNetPrice(1234);
         List<Order> orders = Arrays.asList(order1, order2);
         when(orderService.getOrderByCustomerId(any(Long.class))).thenReturn(orders);
 

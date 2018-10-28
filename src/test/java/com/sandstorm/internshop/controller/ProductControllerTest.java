@@ -47,10 +47,10 @@ public class ProductControllerTest {
     public void getAllProductSuccessfully() throws Exception {
         Product product1 = new Product();
         product1.setName("paiiza");
-        product1.setPrice(1);
+        product1.setPrice(1.0);
         Product product2 = new Product();
         product2.setName("trongza");
-        product2.setPrice(2);
+        product2.setPrice(2.0);
         when(productService.getAllProduct()).thenReturn(Arrays.asList(product1, product2));
 
         // Act
@@ -69,7 +69,7 @@ public class ProductControllerTest {
     public void createProductSuccessfully() throws Exception {
         Product newProduct = new Product();
         newProduct.setName("paiiza");
-        newProduct.setPrice(1);
+        newProduct.setPrice(1.0);
         when(productService.createProduct(any(Product.class))).thenReturn(newProduct);
 
         // Act
@@ -88,7 +88,7 @@ public class ProductControllerTest {
     public void getProductSuccessfully() throws Exception {
         Product newProduct = new Product();
         newProduct.setName("paiiza");
-        newProduct.setPrice(1);
+        newProduct.setPrice(1.0);
         when(productService.getProduct(any(Long.class))).thenReturn(newProduct);
 
         // Act

@@ -1,5 +1,6 @@
 package com.sandstorm.internshop.services;
 
+//import com.sandstorm.internshop.Wrapper.ProductListRequest;
 import com.sandstorm.internshop.entity.Product;
 import org.springframework.http.ResponseEntity;
 
@@ -12,4 +13,6 @@ public interface ProductService {
     List<Product> getAllProduct();
 
     Product createProduct(Product product);
+
+//    List<Product> findAllByProductIds(List<ProductListRequest> productList);
 }

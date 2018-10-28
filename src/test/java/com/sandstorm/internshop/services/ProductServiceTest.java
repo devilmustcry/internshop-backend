@@ -37,7 +37,7 @@ public class ProductServiceTest {
     public void getProduct() {
         Product newProduct = new Product();
         newProduct.setName("paiiza");
-        newProduct.setPrice(1);
+        newProduct.setPrice(1.0);
         when(productRepository.findById(any(Long.class))).thenReturn(Optional.of(newProduct));
 
         Product responseProduct = productService.getProduct(1L);
@@ -52,10 +52,10 @@ public class ProductServiceTest {
     public void getAllProduct() {
         Product product1 = new Product();
         product1.setName("paiiza");
-        product1.setPrice(1);
+        product1.setPrice(1.0);
         Product product2 = new Product();
         product2.setName("trongza");
-        product2.setPrice(2);
+        product2.setPrice(1.0);
         when(productRepository.findAll()).thenReturn(Arrays.asList(product1, product2));
 
         List<Product> productListResponse = productService.getAllProduct();
@@ -71,7 +71,7 @@ public class ProductServiceTest {
     public void createProduct() {
         Product newProduct = new Product();
         newProduct.setName("paiiza");
-        newProduct.setPrice(1);
+        newProduct.setPrice(1.0);
         when(productRepository.save(any(Product.class))).thenReturn(newProduct);
 
         Product productResponse = productService.createProduct(newProduct);

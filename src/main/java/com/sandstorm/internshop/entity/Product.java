@@ -1,5 +1,6 @@
 package com.sandstorm.internshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,6 @@ public class Product extends BaseEntity<String> {
 
     @NotNull
     @Column
-    private double price;
+    private Double price;
 
 }
