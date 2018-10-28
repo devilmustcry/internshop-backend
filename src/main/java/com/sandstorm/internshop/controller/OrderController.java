@@ -35,6 +35,8 @@ public class OrderController {
 
         Order newOrder = orderService.createOrder(orderRequest);
         Double netPrice = orderProductService.createOrderProduct(newOrder, productListRequests);
+        newOrder.setNetPrice(netPrice);
+        orderService.updateOrderPrice(newOrder.getId(), newOrder);
 
         BaseResponse<CreateOrderResponse> response = new CreateOrderResponse();
         ((CreateOrderResponse) response).setNetPrice(netPrice);
@@ -48,10 +50,6 @@ public class OrderController {
     public List<Order> getOrderByCustomer(@RequestParam(name = "customerId") Long customerId) {
 //        Customer customer = customerService.getCustomer(customerId);
         return orderService.getOrderByCustomerId(customerId);
-
-    }
-
-    static class ProductList extends ArrayList<Product> {
 
     }
 }

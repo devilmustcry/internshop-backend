@@ -32,7 +32,7 @@ public class CustomerController {
     public Customer get(@PathVariable(value = "id") Long id) { return customerService.getCustomer(id); }
 
     @GetMapping("/find")
-    public Customer get(@RequestParam(value = "username") String username) {
+    public Customer getByUsername(@RequestParam(value = "username") String username) {
         return customerService.getCustomerByUsername(username);
     }
 

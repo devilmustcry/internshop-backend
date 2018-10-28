@@ -21,5 +21,7 @@ public class Order extends BaseEntity<String> {
     @JsonIgnore
     private Customer customer;
 
+    @Column
+    private Double netPrice;
 
 }

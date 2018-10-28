@@ -9,5 +9,7 @@ public interface OrderService {
 
     Order createOrder(CreateOrderRequest newOrder);
 
+    void updateOrderPrice(Long id, Order order);
+
     List<Order> getOrderByCustomerId(Long customerId);
 }

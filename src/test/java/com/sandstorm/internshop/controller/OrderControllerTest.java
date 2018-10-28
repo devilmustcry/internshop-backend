@@ -104,11 +104,11 @@ public class OrderControllerTest {
     @Test
     public void getOrderByCustomer() throws Exception {
         Order order1 = new Order();
-//        order1.setNetPrice(9999);
+        order1.setNetPrice(9999.0);
         order1.setCustomer(testCustomer);
         Order order2 = new Order();
         order2.setCustomer(testCustomer);
-//        order2.setNetPrice(1234);
+        order2.setNetPrice(1234.0);
         List<Order> orders = Arrays.asList(order1, order2);
         when(orderService.getOrderByCustomerId(any(Long.class))).thenReturn(orders);
 
