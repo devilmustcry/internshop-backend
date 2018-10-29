@@ -87,8 +87,11 @@ public class OrderControllerTest {
         Order order = new Order();
         order.setId(1L);
         order.setCustomer(testCustomer);
+        order.setNetPrice(9999.0);
+        order.setPrice(9999.0);
+        order.setDiscount(0.0);
         when(orderService.createOrder(any(CreateOrderRequest.class))).thenReturn(order);
-        when(orderProductService.createOrderProduct(any(Order.class), any(List.class))).thenReturn(9999.0);
+        when(orderProductService.createOrderProduct(any(Order.class), any(List.class))).thenReturn(order);
 
         ResultActions result = mockMvc.perform(post("/api/v1/orders/")
                 .contentType(MediaType.APPLICATION_JSON)

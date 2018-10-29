@@ -34,12 +34,13 @@ public class OrderController {
         List<CreateOrderRequest.ProductListRequest> productListRequests = orderRequest.getProductListRequestList();
 
         Order newOrder = orderService.createOrder(orderRequest);
-        Double netPrice = orderProductService.createOrderProduct(newOrder, productListRequests);
-        newOrder.setNetPrice(netPrice);
+        newOrder = orderProductService.createOrderProduct(newOrder, productListRequests);
         orderService.updateOrderPrice(newOrder.getId(), newOrder);
 
         BaseResponse<CreateOrderResponse> response = new CreateOrderResponse();
-        ((CreateOrderResponse) response).setNetPrice(netPrice);
+        ((CreateOrderResponse) response).setNetPrice(newOrder.getNetPrice());
+        ((CreateOrderResponse) response).setDiscount(newOrder.getDiscount());
+        ((CreateOrderResponse) response).setPrice(newOrder.getPrice());
         response.setMessage("Create Order Successfully");
         response.setResponseStatus(HttpStatus.CREATED.value());
 

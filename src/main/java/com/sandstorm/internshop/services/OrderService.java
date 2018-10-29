@@ -12,4 +12,6 @@ public interface OrderService {
     void updateOrderPrice(Long id, Order order);
 
     List<Order> getOrderByCustomerId(Long customerId);
+
+    Long countOrderByCustomerId(Long customerId);
 }

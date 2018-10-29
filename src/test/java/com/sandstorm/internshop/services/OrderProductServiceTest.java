@@ -33,13 +33,16 @@ public class OrderProductServiceTest {
     @Mock
     private ProductService productService;
 
+    @Mock
+    private OrderService orderService;
+
     private Customer testCustomer;
     private Product product1;
     private Product product2;
 
     @Before
     public void setUp() throws Exception {
-        orderProductService = new OrderProductServiceImpl(orderProductRepository, productService);
+        orderProductService = new OrderProductServiceImpl(orderProductRepository, productService, orderService);
         testCustomer = new Customer();
         testCustomer.setId(1L);
         testCustomer.setUsername("Test");
@@ -75,12 +78,15 @@ public class OrderProductServiceTest {
         List<CreateOrderRequest.ProductListRequest> productListRequestList = Arrays.asList(productListed1, productListed2);
 
         Double netPrice = productListed1.getAmount() * product1.getPrice() + productListed2.getAmount() * product2.getPrice();
+        order.setPrice(netPrice);
+        order.setDiscount(0.0);
+        order.setNetPrice(netPrice);
         when(productService.getProduct(1L)).thenReturn(product1);
         when(productService.getProduct(2L)).thenReturn(product2);
 
-        Double responseNetPrice = orderProductService.createOrderProduct(order, productListRequestList);
+        Order newOrder = orderProductService.createOrderProduct(order, productListRequestList);
 
-        assertThat(responseNetPrice).isEqualTo(netPrice);
+        assertThat(newOrder).isEqualToComparingFieldByField(order);
         verify(orderProductRepository, times(productListRequestList.size())).save(any(OrderProduct.class));
 
     }

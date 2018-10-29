@@ -1,6 +1,7 @@
 package com.sandstorm.internshop.services;
 
 import com.sandstorm.internshop.Wrapper.Order.CreateOrderRequest;
+import com.sandstorm.internshop.entity.Customer;
 import com.sandstorm.internshop.entity.Order;
 import com.sandstorm.internshop.entity.OrderProduct;
 import com.sandstorm.internshop.exception.OrderNotFound;
@@ -41,5 +42,13 @@ public class OrderServiceImpl implements OrderService {
     {
         return orderRepository.findAllByCustomerId(customerId);
     }
+
+    @Override
+    public Long countOrderByCustomerId(Long customerId) {
+        Customer customer = new Customer();
+        customer.setId(customerId);
+        return orderRepository.countByCustomer(customer);
+    }
+
 
 }

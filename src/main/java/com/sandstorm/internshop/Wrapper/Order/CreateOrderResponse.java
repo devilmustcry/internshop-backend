@@ -10,4 +10,8 @@ public class CreateOrderResponse extends BaseResponse<CreateOrderResponse> {
     
     private Double netPrice;
 
+    private Double price;
+
+    private Double discount;
+
 }

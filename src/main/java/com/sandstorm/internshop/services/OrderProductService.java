@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface OrderProductService {
 
-    Double createOrderProduct(Order order, List<CreateOrderRequest.ProductListRequest> productsOrdered);
+    Order createOrderProduct(Order order, List<CreateOrderRequest.ProductListRequest> productsOrdered);
 }

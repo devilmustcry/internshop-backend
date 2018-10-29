@@ -22,6 +22,12 @@ public class Order extends BaseEntity<String> {
     private Customer customer;
 
     @Column
+    private Double price;
+
+    @Column
+    private Double discount;
+
+    @Column
     private Double netPrice;
 
 }
