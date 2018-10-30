@@ -1,7 +1,8 @@
 package com.sandstorm.internshop.controller;
 
+import com.sandstorm.internshop.wrapper.Base.BaseResponse;
 import com.sandstorm.internshop.entity.Product;
-import com.sandstorm.internshop.services.ProductService;
+import com.sandstorm.internshop.service.Product.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,18 +20,23 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAllProduct() {
-        return productService.getAllProduct();
+    public BaseResponse<List<Product>> getAllProduct()
+    {
+
+        return new BaseResponse<List<Product>>(HttpStatus.OK, "Get All Product Successfully", productService.getAllProduct());
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(product));
+    public ResponseEntity<BaseResponse<Product>> createProduct(@RequestBody Product product) {
+//        return new BaseResponse<Product>(HttpStatus.CREATED, "Create Pr Successfully", productService.createProduct(product));
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new BaseResponse<Product>(HttpStatus.CREATED,"Create Product Successfully", productService.createProduct(product)));
     }
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable(name = "id") Long id) {
-        return productService.getProduct(id);
+    public BaseResponse<Product> getProduct(@PathVariable(name = "id") Long id) {
+        return new BaseResponse<Product>(HttpStatus.OK,"Get A Product Successfully", productService.getProduct(id));
     }
 
 }

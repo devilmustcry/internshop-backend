@@ -1,15 +1,12 @@
 package com.sandstorm.internshop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sandstorm.internshop.Wrapper.Base.BaseResponse;
-import com.sandstorm.internshop.Wrapper.Order.CreateOrderRequest;
-import com.sandstorm.internshop.Wrapper.Order.CreateOrderResponse;
+import com.sandstorm.internshop.wrapper.Order.CreateOrderRequest;
 import com.sandstorm.internshop.entity.Customer;
 import com.sandstorm.internshop.entity.Order;
-import com.sandstorm.internshop.entity.Product;
-import com.sandstorm.internshop.services.CustomerServiceImpl;
-import com.sandstorm.internshop.services.OrderProductServiceImpl;
-import com.sandstorm.internshop.services.OrderServiceImpl;
+import com.sandstorm.internshop.service.Customer.CustomerServiceImpl;
+import com.sandstorm.internshop.service.OrderProduct.OrderProductServiceImpl;
+import com.sandstorm.internshop.service.Order.OrderServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,7 +25,6 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -91,16 +86,19 @@ public class OrderControllerTest {
         order.setPrice(9999.0);
         order.setDiscount(0.0);
         when(orderService.createOrder(any(CreateOrderRequest.class))).thenReturn(order);
-        when(orderProductService.createOrderProduct(any(Order.class), any(List.class))).thenReturn(order);
+        when(orderService.updateOrderPrice(any(Long.class), any(Order.class))).thenReturn(order);
+        when(orderProductService.createOrderProducts(any(Order.class), any(List.class))).thenReturn(order);
 
         ResultActions result = mockMvc.perform(post("/api/v1/orders/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(request)));
 
         result.andExpect(status().isCreated())
-                .andExpect(jsonPath("$.netPrice", is(9999.0)))
+                .andExpect(jsonPath("$.data.price", is(9999.0)))
+                .andExpect(jsonPath("$.data.netPrice", is(9999.0)))
+                .andExpect(jsonPath("$.data.discount", is(0.0)))
                 .andExpect(jsonPath("$.status", is(201)));
-        verify(orderProductService, times(1)).createOrderProduct(any(Order.class), any(List.class));
+        verify(orderProductService, times(1)).createOrderProducts(any(Order.class), any(List.class));
         verify(orderService, times(1)).createOrder(any(CreateOrderRequest.class));
     }
 
@@ -118,8 +116,8 @@ public class OrderControllerTest {
         ResultActions result = mockMvc.perform(get("/api/v1/orders?customerId=1"));
 
         result.andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].netPrice", is(9999.0)))
-                .andExpect(jsonPath("$[1].netPrice", is(1234.0)));
+                .andExpect(jsonPath("$.data[0].netPrice", is(9999.0)))
+                .andExpect(jsonPath("$.data[1].netPrice", is(1234.0)));
         verify(orderService, times(1)).getOrderByCustomerId(any(Long.class));
     }
 }

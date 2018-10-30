@@ -1,11 +1,13 @@
-package com.sandstorm.internshop.services;
+package com.sandstorm.internshop.service.OrderProduct;
 
 
-import com.sandstorm.internshop.Wrapper.Order.CreateOrderRequest;
+import com.sandstorm.internshop.wrapper.Order.CreateOrderRequest;
 import com.sandstorm.internshop.entity.Order;
 import com.sandstorm.internshop.entity.OrderProduct;
 import com.sandstorm.internshop.entity.Product;
 import com.sandstorm.internshop.repository.OrderProductRepository;
+import com.sandstorm.internshop.service.Order.OrderService;
+import com.sandstorm.internshop.service.Product.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,7 @@ public class OrderProductServiceImpl implements OrderProductService {
     }
 
     @Override
-    public Order createOrderProduct(Order order, List<CreateOrderRequest.ProductListRequest> productsOrdered) {
+    public Order createOrderProducts(Order order, List<CreateOrderRequest.ProductListRequest> productsOrdered) {
         Double discount = 0.0;
         Double price = 0.0;
         for(CreateOrderRequest.ProductListRequest productOrdered : productsOrdered) {
@@ -44,11 +46,16 @@ public class OrderProductServiceImpl implements OrderProductService {
         }
         order.setPrice(price);
         Long orderCount = orderService.countOrderByCustomerId(order.getCustomer().getId());
-        if (orderCount.longValue() % 4 == 0) {
-            discount = price * 0.1;
+        if (orderCount.longValue() >= OrderProductServiceConstant.DISCOUNT_THRESHOLD) {
+            discount = price * OrderProductServiceConstant.DISCOUNT_PERCENT;
         }
         order.setDiscount(discount);
         order.setNetPrice(price - discount);
         return order;
+    }
+
+    private static class OrderProductServiceConstant {
+        private static final Long DISCOUNT_THRESHOLD = 4L;
+        private static final Double DISCOUNT_PERCENT = 0.1;
     }
 }

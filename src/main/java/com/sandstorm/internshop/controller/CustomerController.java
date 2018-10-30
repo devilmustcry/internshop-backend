@@ -1,7 +1,8 @@
 package com.sandstorm.internshop.controller;
 
+import com.sandstorm.internshop.wrapper.Base.BaseResponse;
 import com.sandstorm.internshop.entity.Customer;
-import com.sandstorm.internshop.services.CustomerServiceImpl;
+import com.sandstorm.internshop.service.Customer.CustomerServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,16 +25,19 @@ public class CustomerController {
     }
 
     @GetMapping
-    public List<Customer> getAll() {
-        return customerService.getAllCustomer();
+    public BaseResponse<List<Customer>> getAll() {
+
+        return new BaseResponse<List<Customer>>(HttpStatus.OK, "Get all customer successfully", customerService.getAllCustomer());
     }
 
     @GetMapping("/{id}")
-    public Customer get(@PathVariable(value = "id") Long id) { return customerService.getCustomer(id); }
+    public BaseResponse<Customer> get(@PathVariable(value = "id") Long id) {
+        return new BaseResponse<Customer>(HttpStatus.OK,"Get A Customer Successfully", customerService.getCustomer(id));
+    }
 
     @GetMapping("/find")
-    public Customer getByUsername(@RequestParam(value = "username") String username) {
-        return customerService.getCustomerByUsername(username);
+    public BaseResponse<Customer> getByUsername(@RequestParam(value = "username") String username) {
+        return new BaseResponse<Customer>(HttpStatus.OK, "Get Customer By Username Successfully", customerService.getCustomerByUsername(username));
     }
 
 }

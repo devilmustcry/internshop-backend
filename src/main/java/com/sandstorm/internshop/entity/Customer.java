@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Accessors(chain = true)
 public class Customer extends BaseEntity<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,8 +49,4 @@ public class Customer extends BaseEntity<String> {
         return Objects.equals(id, customer.id);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), id);
-    }
 }

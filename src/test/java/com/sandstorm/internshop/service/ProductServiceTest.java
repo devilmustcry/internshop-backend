@@ -1,8 +1,9 @@
-package com.sandstorm.internshop.services;
+package com.sandstorm.internshop.service;
 
 import com.sandstorm.internshop.entity.Product;
 import com.sandstorm.internshop.repository.ProductRepository;
-import org.junit.After;
+import com.sandstorm.internshop.service.Product.ProductService;
+import com.sandstorm.internshop.service.Product.ProductServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -20,9 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.sandstorm.internshop.security.Constants.SECRET;
-import static com.sandstorm.internshop.security.Constants.TOKEN_HEADER;
-import static com.sandstorm.internshop.security.Constants.TOKEN_PREFIX;
+import static com.sandstorm.internshop.security.SecurityConstants.SECRET;
+import static com.sandstorm.internshop.security.SecurityConstants.TOKEN_HEADER;
+import static com.sandstorm.internshop.security.SecurityConstants.TOKEN_PREFIX;
 
 
 @Slf4j

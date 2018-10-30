@@ -1,18 +1,16 @@
 package com.sandstorm.internshop.controller;
 
-import com.sandstorm.internshop.Wrapper.Base.BaseResponse;
-import com.sandstorm.internshop.Wrapper.Order.CreateOrderRequest;
-import com.sandstorm.internshop.Wrapper.Order.CreateOrderResponse;
+import com.sandstorm.internshop.wrapper.Base.BaseResponse;
+import com.sandstorm.internshop.wrapper.Order.CreateOrderRequest;
+import com.sandstorm.internshop.wrapper.Order.CreateOrderResponse;
 import com.sandstorm.internshop.entity.Order;
-import com.sandstorm.internshop.entity.Product;
-import com.sandstorm.internshop.services.OrderProductService;
-import com.sandstorm.internshop.services.OrderService;
+import com.sandstorm.internshop.service.OrderProduct.OrderProductService;
+import com.sandstorm.internshop.service.Order.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,28 +27,26 @@ public class OrderController {
         this.orderProductService = orderProductService;
     }
 
+
     @PostMapping
-    public ResponseEntity<BaseResponse> createOrder(@RequestBody CreateOrderRequest orderRequest) {
+    public ResponseEntity<BaseResponse<CreateOrderResponse>> createOrder(@RequestBody CreateOrderRequest orderRequest) {
         List<CreateOrderRequest.ProductListRequest> productListRequests = orderRequest.getProductListRequestList();
 
         Order newOrder = orderService.createOrder(orderRequest);
-        newOrder = orderProductService.createOrderProduct(newOrder, productListRequests);
+        newOrder = orderProductService.createOrderProducts(newOrder, productListRequests);
         orderService.updateOrderPrice(newOrder.getId(), newOrder);
 
-        BaseResponse<CreateOrderResponse> response = new CreateOrderResponse();
-        ((CreateOrderResponse) response).setNetPrice(newOrder.getNetPrice());
-        ((CreateOrderResponse) response).setDiscount(newOrder.getDiscount());
-        ((CreateOrderResponse) response).setPrice(newOrder.getPrice());
-        response.setMessage("Create Order Successfully");
-        response.setResponseStatus(HttpStatus.CREATED.value());
+        CreateOrderResponse response = new CreateOrderResponse();
+        response.setNetPrice(newOrder.getNetPrice())
+                .setDiscount(newOrder.getDiscount())
+                .setPrice(newOrder.getPrice());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponse(HttpStatus.CREATED, "Create order successfully", response));
     }
 
     @GetMapping
-    public List<Order> getOrderByCustomer(@RequestParam(name = "customerId") Long customerId) {
-//        Customer customer = customerService.getCustomer(customerId);
-        return orderService.getOrderByCustomerId(customerId);
+    public BaseResponse<List<Order>> getOrderByCustomer(@RequestParam(name = "customerId") Long customerId) {
+        return new BaseResponse<List<Order>>(HttpStatus.OK, "Get Order By Customer", orderService.getOrderByCustomerId(customerId));
 
     }
 }

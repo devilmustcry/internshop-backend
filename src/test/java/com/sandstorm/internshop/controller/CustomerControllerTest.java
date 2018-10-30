@@ -3,7 +3,7 @@ package com.sandstorm.internshop.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sandstorm.internshop.entity.Customer;
 import com.sandstorm.internshop.exception.CustomerNotFound;
-import com.sandstorm.internshop.services.CustomerServiceImpl;
+import com.sandstorm.internshop.service.Customer.CustomerServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,12 +88,12 @@ public class CustomerControllerTest {
 
         // Assert
         result.andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name", is("paiiza")))
-                .andExpect(jsonPath("$[0].username", is("test")))
-                .andExpect(jsonPath("$[0].password", is("1234")))
-                .andExpect(jsonPath("$[1].name", is("trongza")))
-                .andExpect(jsonPath("$[1].username", is("za")))
-                .andExpect(jsonPath("$[1].password", is("5678")));
+                .andExpect(jsonPath("$.data[0].name", is("paiiza")))
+                .andExpect(jsonPath("$.data[0].username", is("test")))
+                .andExpect(jsonPath("$.data[0].password", is("1234")))
+                .andExpect(jsonPath("$.data[1].name", is("trongza")))
+                .andExpect(jsonPath("$.data[1].username", is("za")))
+                .andExpect(jsonPath("$.data[1].password", is("5678")));
         verify(customerService, times(1)).getAllCustomer();
     }
 
@@ -111,9 +111,9 @@ public class CustomerControllerTest {
 
         // Assert
         result.andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("GET")))
-                .andExpect(jsonPath("$.username", is("GETUSER")))
-                .andExpect(jsonPath("$.password", is("GETPASS")));
+                .andExpect(jsonPath("$.data.name", is("GET")))
+                .andExpect(jsonPath("$.data.username", is("GETUSER")))
+                .andExpect(jsonPath("$.data.password", is("GETPASS")));
         verify(customerService, times(1)).getCustomer(any(Long.class));
     }
 
@@ -144,9 +144,9 @@ public class CustomerControllerTest {
 
         // Assert
         result.andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("GET")))
-                .andExpect(jsonPath("$.username", is("GETUSER")))
-                .andExpect(jsonPath("$.password", is("GETPASS")));
+                .andExpect(jsonPath("$.data.name", is("GET")))
+                .andExpect(jsonPath("$.data.username", is("GETUSER")))
+                .andExpect(jsonPath("$.data.password", is("GETPASS")));
         verify(customerService, times(1)).getCustomerByUsername("GETUSER");
     }
 
@@ -163,4 +163,5 @@ public class CustomerControllerTest {
         verify(customerService, times(1)).getCustomerByUsername(any(String.class));
 
     }
+
 }

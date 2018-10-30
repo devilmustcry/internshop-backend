@@ -1,7 +1,8 @@
 package com.sandstorm.internshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.hibernate.annotations.LazyToOne;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Entity(name = "order_products")
 @Data
+@Accessors(chain = true)
 public class OrderProduct extends BaseEntity<String> {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,11 +18,12 @@ public class OrderProduct extends BaseEntity<String> {
     @Column
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     private Order order;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
@@ -31,5 +34,6 @@ public class OrderProduct extends BaseEntity<String> {
     @Column
     @NotNull
     private Double netPrice;
+
 
 }

@@ -1,16 +1,19 @@
-package com.sandstorm.internshop.services;
+package com.sandstorm.internshop.service;
 
-import com.sandstorm.internshop.Wrapper.Order.CreateOrderRequest;
+import com.sandstorm.internshop.service.OrderProduct.OrderProductService;
+import com.sandstorm.internshop.wrapper.Order.CreateOrderRequest;
 import com.sandstorm.internshop.entity.Customer;
 import com.sandstorm.internshop.entity.Order;
 import com.sandstorm.internshop.entity.OrderProduct;
 import com.sandstorm.internshop.entity.Product;
 import com.sandstorm.internshop.repository.OrderProductRepository;
+import com.sandstorm.internshop.service.Order.OrderService;
+import com.sandstorm.internshop.service.OrderProduct.OrderProductServiceImpl;
+import com.sandstorm.internshop.service.Product.ProductService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
@@ -25,7 +28,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class OrderProductServiceTest {
 
-    private OrderProductServiceImpl orderProductService;
+    private OrderProductService orderProductService;
 
     @Mock
     private OrderProductRepository orderProductRepository;
@@ -83,11 +86,47 @@ public class OrderProductServiceTest {
         order.setNetPrice(netPrice);
         when(productService.getProduct(1L)).thenReturn(product1);
         when(productService.getProduct(2L)).thenReturn(product2);
+        when(orderService.countOrderByCustomerId(any(Long.class))).thenReturn(1L);
 
-        Order newOrder = orderProductService.createOrderProduct(order, productListRequestList);
+        Order newOrder = orderProductService.createOrderProducts(order, productListRequestList);
 
         assertThat(newOrder).isEqualToComparingFieldByField(order);
+        verify(orderService, times(1)).countOrderByCustomerId(any(Long.class));
+        verify(productService, times(productListRequestList.size())).getProduct(any(Long.class));
         verify(orderProductRepository, times(productListRequestList.size())).save(any(OrderProduct.class));
+    }
 
+    @Test
+    public void createOrderProductSuccessfullyWithDiscount() {
+        Order order = new Order();
+        order.setId(1L);
+        order.setCustomer(testCustomer);
+
+        CreateOrderRequest.ProductListRequest productListed1 = new CreateOrderRequest.ProductListRequest();
+        productListed1.setAmount(1);
+        productListed1.setProductId(1L);
+
+        CreateOrderRequest.ProductListRequest productListed2 = new CreateOrderRequest.ProductListRequest();
+        productListed2.setAmount(3);
+        productListed2.setProductId(2L);
+
+        List<CreateOrderRequest.ProductListRequest> productListRequestList = Arrays.asList(productListed1, productListed2);
+
+        Double netPrice = productListed1.getAmount() * product1.getPrice() + productListed2.getAmount() * product2.getPrice();
+        order.setPrice(netPrice);
+        order.setDiscount(0.0);
+        order.setNetPrice(netPrice);
+        when(productService.getProduct(1L)).thenReturn(product1);
+        when(productService.getProduct(2L)).thenReturn(product2);
+        when(orderService.countOrderByCustomerId(any(Long.class))).thenReturn(5L);
+
+        Order newOrder = orderProductService.createOrderProducts(order, productListRequestList);
+
+        assertThat(newOrder.getPrice()).isEqualTo(order.getPrice());
+        assertThat(newOrder.getDiscount()).isEqualTo(order.getPrice() * 0.1);
+        assertThat(newOrder.getNetPrice()).isEqualTo(order.getPrice() - (order.getPrice() * 0.1));
+        verify(orderService, times(1)).countOrderByCustomerId(any(Long.class));
+        verify(productService, times(productListRequestList.size())).getProduct(any(Long.class));
+        verify(orderProductRepository, times(productListRequestList.size())).save(any(OrderProduct.class));
     }
 }

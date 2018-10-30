@@ -1,4 +1,4 @@
-package com.sandstorm.internshop.Wrapper.Order;
+package com.sandstorm.internshop.wrapper.Order;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

@@ -1,10 +1,9 @@
 package com.sandstorm.internshop.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sandstorm.internshop.entity.Product;
 import com.sandstorm.internshop.exception.ProductNotFound;
-import com.sandstorm.internshop.services.ProductServiceImpl;
+import com.sandstorm.internshop.service.Product.ProductServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,10 +57,10 @@ public class ProductControllerTest {
 
         // Assert
         result.andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name", is("paiiza")))
-                .andExpect(jsonPath("$[0].price", is(1.0)))
-                .andExpect(jsonPath("$[1].name", is("trongza")))
-                .andExpect(jsonPath("$[1].price", is(2.0)));
+                .andExpect(jsonPath("$.data[0].name", is("paiiza")))
+                .andExpect(jsonPath("$.data[0].price", is(1.0)))
+                .andExpect(jsonPath("$.data[1].name", is("trongza")))
+                .andExpect(jsonPath("$.data[1].price", is(2.0)));
         verify(productService, times(1)).getAllProduct();
     }
 
@@ -79,8 +78,8 @@ public class ProductControllerTest {
 
         // Assert
         result.andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name", is("paiiza")))
-                .andExpect(jsonPath("$.price", is(1.0)));
+                .andExpect(jsonPath("$.data.name", is("paiiza")))
+                .andExpect(jsonPath("$.data.price", is(1.0)));
         verify(productService, times(1)).createProduct(newProduct);
     }
 
@@ -97,8 +96,8 @@ public class ProductControllerTest {
 
         // Assert
         result.andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("paiiza")))
-                .andExpect(jsonPath("$.price", is(1.0)));
+                .andExpect(jsonPath("$.data.name", is("paiiza")))
+                .andExpect(jsonPath("$.data.price", is(1.0)));
         verify(productService, times(1)).getProduct(any(Long.class));
     }
 

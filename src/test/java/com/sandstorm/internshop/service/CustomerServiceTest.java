@@ -1,12 +1,17 @@
-package com.sandstorm.internshop.services;
+package com.sandstorm.internshop.service;
 
 import com.sandstorm.internshop.entity.Customer;
+import com.sandstorm.internshop.exception.CustomerNotFound;
 import com.sandstorm.internshop.repository.CustomerRepository;
+import com.sandstorm.internshop.service.Customer.CustomerService;
+import com.sandstorm.internshop.service.Customer.CustomerServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Arrays;
@@ -84,13 +89,64 @@ public class CustomerServiceTest {
         getCustomer.setName("GET");
         getCustomer.setUsername("GETUSER");
         getCustomer.setPassword("GETPASS");
-        when(customerRepository.findById(1L)).thenReturn(Optional.of(getCustomer));
+        when(customerRepository.findById(any(Long.class))).thenReturn(Optional.of(getCustomer));
 
         Customer responseCustomer = customerService.getCustomer(1L);
 
         assertThat(responseCustomer.getName()).isEqualTo("GET");
         assertThat(responseCustomer.getUsername()).isEqualTo("GETUSER");
         assertThat(responseCustomer.getPassword()).isEqualTo("GETPASS");
-        verify(customerRepository, times(1)).findById(1L);
+        verify(customerRepository, times(1)).findById(any(Long.class));
+    }
+
+    @Test(expected = CustomerNotFound.class)
+    public void getCustomerFailed() throws Throwable {
+        when(customerRepository.findById(any(Long.class))).thenThrow(new CustomerNotFound("TEST"));
+
+        Customer customer = customerService.getCustomer(1L);
+
+//        verify(customerRepository, times(1)).findById(any(Long.class));
+    }
+
+    @Test
+    public void getCustomerByUsernameSuccessfully() throws Throwable {
+        Customer getCustomer = new Customer();
+        getCustomer.setName("GET");
+        getCustomer.setUsername("GETUSER");
+        getCustomer.setPassword("GETPASS");
+        when(customerRepository.findByUsername(any(String.class))).thenReturn(Optional.of(getCustomer));
+
+        Customer responseCustomer = customerService.getCustomerByUsername("GETUSER");
+
+        assertThat(responseCustomer.getName()).isEqualTo("GET");
+        assertThat(responseCustomer.getUsername()).isEqualTo("GETUSER");
+        assertThat(responseCustomer.getPassword()).isEqualTo("GETPASS");
+        verify(customerRepository, times(1)).findByUsername(any(String.class));
+    }
+
+    @Test(expected = CustomerNotFound.class)
+    public void getCustomerByUsernameFailed() throws Throwable {
+        when(customerRepository.findByUsername(any(String.class))).thenThrow(new CustomerNotFound("TEST"));
+
+        Customer customer = customerService.getCustomerByUsername("TEST");
+
+//        verify(customerRepository, times(1)).findById(any(Long.class));
+    }
+
+    @Test
+    public void loadUserWhenLogin() {
+        Customer testCustomer = new Customer();
+        testCustomer.setId(1L);
+        testCustomer.setName("TEST");
+        testCustomer.setUsername("id");
+        testCustomer.setPassword("password");
+
+        CustomerService mockCustomerService = Mockito.spy(customerService);
+        doReturn(testCustomer).when(mockCustomerService).getCustomerByUsername(any(String.class));
+
+        UserDetails customer = mockCustomerService.loadUserByUsername("id");
+        assertThat(customer.getUsername()).isEqualTo("id");
+        assertThat(customer.getPassword()).isEqualTo("password");
+        verify(mockCustomerService, times(1)).getCustomerByUsername(any(String.class));
     }
 }

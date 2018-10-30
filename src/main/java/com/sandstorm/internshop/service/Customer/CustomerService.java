@@ -1,4 +1,4 @@
-package com.sandstorm.internshop.services;
+package com.sandstorm.internshop.service.Customer;
 
 import com.sandstorm.internshop.entity.Customer;
 import org.springframework.security.core.userdetails.UserDetailsService;
