@@ -49,4 +49,13 @@ public class Customer extends BaseEntity<String> {
         return Objects.equals(id, customer.id);
     }
 
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

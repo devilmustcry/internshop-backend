@@ -85,7 +85,7 @@ public class OrderControllerTest {
         order.setNetPrice(9999.0);
         order.setPrice(9999.0);
         order.setDiscount(0.0);
-        when(orderService.createOrder(any(CreateOrderRequest.class))).thenReturn(order);
+        when(orderService.createOrder(any(Long.class), any(CreateOrderRequest.class))).thenReturn(order);
         when(orderService.updateOrderPrice(any(Long.class), any(Order.class))).thenReturn(order);
         when(orderProductService.createOrderProducts(any(Order.class), any(List.class))).thenReturn(order);
 
@@ -99,7 +99,7 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$.data.discount", is(0.0)))
                 .andExpect(jsonPath("$.status", is(201)));
         verify(orderProductService, times(1)).createOrderProducts(any(Order.class), any(List.class));
-        verify(orderService, times(1)).createOrder(any(CreateOrderRequest.class));
+        verify(orderService, times(1)).createOrder(any(Long.class), any(CreateOrderRequest.class));
     }
 
     @Test

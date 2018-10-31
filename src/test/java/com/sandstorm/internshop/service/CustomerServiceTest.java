@@ -40,22 +40,25 @@ public class CustomerServiceTest {
 
     @Test
     public void createCustomerSuccessfully() {
+        // Arrange
         Customer newCustomer = new Customer();
         newCustomer.setName("paiiza");
         newCustomer.setUsername("test");
         newCustomer.setPassword("1234");
-        when(customerRepository.save(any(Customer.class))).thenReturn(newCustomer);
 
+        when(customerRepository.save(any(Customer.class))).thenReturn(newCustomer);
+        when(bCryptPasswordEncoder.encode(any(String.class))).thenReturn("1234");
+
+        // Act
         Customer customerResponse = customerService.createCustomer(newCustomer);
 
+        // Assert
         assertThat(customerResponse.getName()).isEqualTo("paiiza");
         assertThat(customerResponse.getUsername()).isEqualTo("test");
-        assertThat(customerResponse.getPassword()).isEqualTo(bCryptPasswordEncoder.encode("1234"));
+        assertThat(customerResponse.getPassword()).isEqualTo("1234");
 
         verify(customerRepository, times(1)).save(newCustomer);
-//        ResultActions result = mockMvc.perform(post("/api/v1/customers")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(objectMapper.writeValueAsBytes(newCustomer)));
+        verify(bCryptPasswordEncoder, times(1)).encode(any(String.class));
 
     }
 

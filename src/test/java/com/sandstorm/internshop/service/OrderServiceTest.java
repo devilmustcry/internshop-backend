@@ -70,7 +70,7 @@ public class OrderServiceTest {
         when(orderRepository.save(any(Order.class))).thenReturn(order);
         when(customerService.getCustomer(any(Long.class))).thenReturn(testCustomer);
 
-        Order responseOrder = orderService.createOrder(request);
+        Order responseOrder = orderService.createOrder(1L, request);
 
         assertThat(responseOrder.getCustomer()).isEqualToComparingFieldByField(testCustomer);
         verify(orderRepository, times(1)).save(any(Order.class));
@@ -96,7 +96,7 @@ public class OrderServiceTest {
         order.setCustomer(testCustomer);
         when(customerService.getCustomer(any(Long.class))).thenThrow(new CustomerNotFound("TEST"));
 
-        Order responseOrder = orderService.createOrder(request);
+        Order responseOrder = orderService.createOrder(1L, request);
     }
 
     @Test

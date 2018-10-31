@@ -1,0 +1,54 @@
+package com.sandstorm.internshop.security;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.sandstorm.internshop.entity.Customer;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+
+@Component
+@Slf4j
+public class JWTTokenProvider {
+
+    @Value("${auth.secret.key}")
+    private String JWT_SECRET;
+
+    @Value("${auth.token.prefix}")
+    private String TOKEN_PREFIX;
+
+    public String generateToken(Authentication authentication) {
+
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+//        Date now = new Date();
+//        Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
+
+        String token = JWT.create()
+                .withSubject(userPrincipal.getId().toString())
+                .sign(Algorithm.HMAC512(JWT_SECRET.getBytes()));
+
+        return token;
+    }
+
+    public Long getUserIdFromJWT(String token) {
+        String jwt = JWT
+                .require(Algorithm.HMAC512(JWT_SECRET.getBytes()))
+                .build()
+                .verify(token.replace(TOKEN_PREFIX, ""))
+                .getSubject();
+        return Long.parseLong(jwt);
+    }
+
+    public boolean validate(String token) {
+        String user = JWT
+                .require(Algorithm.HMAC512(JWT_SECRET.getBytes()))
+                .build()
+                .verify(token.replace(TOKEN_PREFIX, ""))
+                .getSubject();
+        if (user != null) {
+            return true;
+        }
+        return false;
+    }
+}

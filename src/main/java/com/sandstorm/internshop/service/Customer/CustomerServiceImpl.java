@@ -48,7 +48,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Customer customer = getCustomerByUsername(username);
-        return new User(customer.getUsername(), customer.getPassword(), emptyList());
+        UserDetails user = new User(customer.getUsername(), customer.getPassword(), emptyList());
+        return user;
     }
 
 }

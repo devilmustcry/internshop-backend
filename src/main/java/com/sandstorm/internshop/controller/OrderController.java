@@ -1,5 +1,6 @@
 package com.sandstorm.internshop.controller;
 
+import com.sandstorm.internshop.security.CurrentUser;
 import com.sandstorm.internshop.wrapper.Base.BaseResponse;
 import com.sandstorm.internshop.wrapper.Order.CreateOrderRequest;
 import com.sandstorm.internshop.wrapper.Order.CreateOrderResponse;
@@ -29,10 +30,10 @@ public class OrderController {
 
 
     @PostMapping
-    public ResponseEntity<BaseResponse<CreateOrderResponse>> createOrder(@RequestBody CreateOrderRequest orderRequest) {
+    public ResponseEntity<BaseResponse<CreateOrderResponse>> createOrder(@CurrentUser Long customerId, @RequestBody CreateOrderRequest orderRequest) {
         List<CreateOrderRequest.ProductListRequest> productListRequests = orderRequest.getProductListRequestList();
 
-        Order newOrder = orderService.createOrder(orderRequest);
+        Order newOrder = orderService.createOrder(customerId, orderRequest);
         newOrder = orderProductService.createOrderProducts(newOrder, productListRequests);
         orderService.updateOrderPrice(newOrder.getId(), newOrder);
 
@@ -45,7 +46,7 @@ public class OrderController {
     }
 
     @GetMapping
-    public BaseResponse<List<Order>> getOrderByCustomer(@RequestParam(name = "customerId") Long customerId) {
+    public BaseResponse<List<Order>> getOrderByCustomer(@CurrentUser Long customerId) {
         return new BaseResponse<List<Order>>(HttpStatus.OK, "Get Order By Customer", orderService.getOrderByCustomerId(customerId));
 
     }
