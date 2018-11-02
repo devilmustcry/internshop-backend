@@ -3,6 +3,7 @@ package com.sandstorm.internshop.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.sandstorm.internshop.entity.Customer;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
+@Setter
 public class JWTTokenProvider {
 
     @Value("${auth.secret.key}")
@@ -17,6 +19,11 @@ public class JWTTokenProvider {
 
     @Value("${auth.token.prefix}")
     private String TOKEN_PREFIX;
+
+//    @Value("${auth.token.prefix}")
+//    String setUrl( final String TOKEN_PREFIX ) {
+//         this.TOKEN_PREFIX  = TOKEN_PREFIX;
+//    }
 
     public String generateToken(Authentication authentication) {
 

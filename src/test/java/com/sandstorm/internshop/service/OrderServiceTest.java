@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.Java6Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -174,7 +175,9 @@ public class OrderServiceTest {
         verify(orderRepository, times(1)).save(any(Order.class));
     }
 
-    @Test(expected = OrderNotFound.class)
+    @Test(
+            expected = OrderNotFound.class
+    )
     public void updateProductPriceFailedToFindOrder() {
         Order beforeUpdate = new Order();
         beforeUpdate.setCustomer(testCustomer);
@@ -191,6 +194,7 @@ public class OrderServiceTest {
         when(orderRepository.findById(any(Long.class))).thenThrow(new OrderNotFound("TEST"));
 
         Order updateOrder = orderService.updateOrderPrice(beforeUpdate.getId(), beforeUpdate);
+        assertThatThrownBy(() -> {throw new OrderNotFound("TEST");});
     }
 
     @Test
