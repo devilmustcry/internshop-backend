@@ -136,20 +136,20 @@ public class CustomerServiceTest {
 //        verify(customerRepository, times(1)).findById(any(Long.class));
     }
 
-    @Test
-    public void loadUserWhenLogin() {
-        Customer testCustomer = new Customer();
-        testCustomer.setId(1L);
-        testCustomer.setName("TEST");
-        testCustomer.setUsername("id");
-        testCustomer.setPassword("password");
-
-        CustomerService mockCustomerService = Mockito.spy(customerService);
-        doReturn(testCustomer).when(mockCustomerService).getCustomerByUsername(any(String.class));
-
-        UserDetails customer = mockCustomerService.loadUserByUsername("id");
-        assertThat(customer.getUsername()).isEqualTo("id");
-        assertThat(customer.getPassword()).isEqualTo("password");
-        verify(mockCustomerService, times(1)).getCustomerByUsername(any(String.class));
-    }
+//    @Test
+//    public void loadUserWhenLogin() {
+//        Customer testCustomer = new Customer();
+//        testCustomer.setId(1L);
+//        testCustomer.setName("TEST");
+//        testCustomer.setUsername("id");
+//        testCustomer.setPassword("password");
+//
+//        CustomerService mockCustomerService = Mockito.spy(customerService);
+//        doReturn(testCustomer).when(mockCustomerService).getCustomerByUsername(any(String.class));
+//
+//        UserDetails customer = mockCustomerService.loadUserByUsername("id");
+//        assertThat(customer.getUsername()).isEqualTo("id");
+//        assertThat(customer.getPassword()).isEqualTo("password");
+//        verify(mockCustomerService, times(1)).getCustomerByUsername(any(String.class));
+//    }
 }

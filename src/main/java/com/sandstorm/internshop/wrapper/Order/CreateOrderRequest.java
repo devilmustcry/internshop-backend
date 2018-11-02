@@ -8,8 +8,6 @@ import java.util.List;
 @Data
 public class CreateOrderRequest {
 
-    private Long customerId;
-
     @JsonProperty("productList")
     private List<ProductListRequest> productListRequestList;
 

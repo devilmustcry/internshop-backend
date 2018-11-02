@@ -62,7 +62,6 @@ public class OrderServiceTest {
 
         List<CreateOrderRequest.ProductListRequest> productList = Arrays.asList(product1, product2);
         CreateOrderRequest request = new CreateOrderRequest();
-        request.setCustomerId(1L);
         request.setProductListRequestList(productList);
 
         Order order = new Order();
@@ -89,7 +88,6 @@ public class OrderServiceTest {
 
         List<CreateOrderRequest.ProductListRequest> productList = Arrays.asList(product1, product2);
         CreateOrderRequest request = new CreateOrderRequest();
-        request.setCustomerId(1L);
         request.setProductListRequestList(productList);
 
         Order order = new Order();

@@ -44,12 +44,4 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer getCustomerByUsername(String username) {
         return customerRepository.findByUsername(username).orElseThrow(() -> new CustomerNotFound("Cannot find customer with username: " + username));
     }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Customer customer = getCustomerByUsername(username);
-        UserDetails user = new User(customer.getUsername(), customer.getPassword(), emptyList());
-        return user;
-    }
-
 }

@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
-public interface CustomerService extends UserDetailsService {
+public interface CustomerService {
 
     Customer createCustomer(Customer customer);
 

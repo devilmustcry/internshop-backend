@@ -49,9 +49,9 @@ public class CustomerController {
     }
 
 
-    @GetMapping("/test")
-    public Long test(@CurrentUser Long user) {
-        return user;
-    }
+//    @GetMapping("/test")
+//    public Long test(@CurrentUser Long user) {
+//        return user;
+//    }
 
 }
