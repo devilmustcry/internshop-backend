@@ -1,15 +1,12 @@
 package com.sandstorm.internshop.security;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
-import com.sandstorm.internshop.entity.Customer;
+import com.sandstorm.internshop.entity.product.Customer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.security.core.Authentication;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;

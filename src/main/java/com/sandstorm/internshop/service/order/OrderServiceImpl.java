@@ -1,11 +1,11 @@
-package com.sandstorm.internshop.service.Order;
+package com.sandstorm.internshop.service.order;
 
 import com.sandstorm.internshop.wrapper.Order.CreateOrderRequest;
-import com.sandstorm.internshop.entity.Customer;
-import com.sandstorm.internshop.entity.Order;
+import com.sandstorm.internshop.entity.product.Customer;
+import com.sandstorm.internshop.entity.product.Order;
 import com.sandstorm.internshop.exception.OrderNotFound;
-import com.sandstorm.internshop.repository.OrderRepository;
-import com.sandstorm.internshop.service.Customer.CustomerService;
+import com.sandstorm.internshop.repository.product.OrderRepository;
+import com.sandstorm.internshop.service.customer.CustomerService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

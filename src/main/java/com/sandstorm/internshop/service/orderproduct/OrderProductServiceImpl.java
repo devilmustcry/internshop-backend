@@ -1,13 +1,13 @@
-package com.sandstorm.internshop.service.OrderProduct;
+package com.sandstorm.internshop.service.orderproduct;
 
 
 import com.sandstorm.internshop.wrapper.Order.CreateOrderRequest;
-import com.sandstorm.internshop.entity.Order;
-import com.sandstorm.internshop.entity.OrderProduct;
-import com.sandstorm.internshop.entity.Product;
-import com.sandstorm.internshop.repository.OrderProductRepository;
-import com.sandstorm.internshop.service.Order.OrderService;
-import com.sandstorm.internshop.service.Product.ProductService;
+import com.sandstorm.internshop.entity.product.Order;
+import com.sandstorm.internshop.entity.product.OrderProduct;
+import com.sandstorm.internshop.entity.product.Product;
+import com.sandstorm.internshop.repository.product.OrderProductRepository;
+import com.sandstorm.internshop.service.order.OrderService;
+import com.sandstorm.internshop.service.product.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +16,9 @@ import java.util.List;
 @Service
 @Slf4j
 public class OrderProductServiceImpl implements OrderProductService {
+
+    private static final Long DISCOUNT_THRESHOLD = 4L;
+    private static final Double DISCOUNT_PERCENT = 0.1;
 
     private final OrderProductRepository orderProductRepository;
 
@@ -46,16 +49,13 @@ public class OrderProductServiceImpl implements OrderProductService {
         }
         order.setPrice(price);
         Long orderCount = orderService.countOrderByCustomerId(order.getCustomer().getId());
-        if (orderCount.longValue() >= OrderProductServiceConstant.DISCOUNT_THRESHOLD) {
-            discount = price * OrderProductServiceConstant.DISCOUNT_PERCENT;
+        if (orderCount.longValue() >= DISCOUNT_THRESHOLD) {
+            discount = price * DISCOUNT_PERCENT;
         }
         order.setDiscount(discount);
         order.setNetPrice(price - discount);
         return order;
     }
 
-    private static class OrderProductServiceConstant {
-        private static final Long DISCOUNT_THRESHOLD = 4L;
-        private static final Double DISCOUNT_PERCENT = 0.1;
-    }
+
 }

@@ -1,9 +1,9 @@
 package com.sandstorm.internshop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sandstorm.internshop.entity.Product;
+import com.sandstorm.internshop.entity.product.Product;
 import com.sandstorm.internshop.exception.ProductNotFound;
-import com.sandstorm.internshop.service.Product.ProductServiceImpl;
+import com.sandstorm.internshop.service.product.ProductServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

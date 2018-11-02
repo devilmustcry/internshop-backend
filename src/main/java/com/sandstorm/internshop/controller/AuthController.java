@@ -1,12 +1,10 @@
 package com.sandstorm.internshop.controller;
 
-import com.sandstorm.internshop.entity.Customer;
 import com.sandstorm.internshop.security.JWTTokenProvider;
 import com.sandstorm.internshop.wrapper.Base.BaseResponse;
 import com.sandstorm.internshop.wrapper.JWT.JWTResponse;
 import com.sandstorm.internshop.wrapper.JWT.LoginRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

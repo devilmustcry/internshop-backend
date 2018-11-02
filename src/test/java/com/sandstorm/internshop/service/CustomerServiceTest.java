@@ -1,17 +1,15 @@
 package com.sandstorm.internshop.service;
 
-import com.sandstorm.internshop.entity.Customer;
+import com.sandstorm.internshop.entity.product.Customer;
 import com.sandstorm.internshop.exception.CustomerNotFound;
-import com.sandstorm.internshop.repository.CustomerRepository;
-import com.sandstorm.internshop.service.Customer.CustomerService;
-import com.sandstorm.internshop.service.Customer.CustomerServiceImpl;
+import com.sandstorm.internshop.repository.product.CustomerRepository;
+import com.sandstorm.internshop.service.customer.CustomerService;
+import com.sandstorm.internshop.service.customer.CustomerServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Arrays;
@@ -138,7 +136,7 @@ public class CustomerServiceTest {
 
 //    @Test
 //    public void loadUserWhenLogin() {
-//        Customer testCustomer = new Customer();
+//        customer testCustomer = new customer();
 //        testCustomer.setId(1L);
 //        testCustomer.setName("TEST");
 //        testCustomer.setUsername("id");

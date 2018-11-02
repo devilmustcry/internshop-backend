@@ -1,7 +1,6 @@
-package com.sandstorm.internshop.service.Customer;
+package com.sandstorm.internshop.service.customer;
 
-import com.sandstorm.internshop.entity.Customer;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import com.sandstorm.internshop.entity.product.Customer;
 
 import java.util.List;
 

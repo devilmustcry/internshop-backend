@@ -1,7 +1,7 @@
 package com.sandstorm.internshop.service;
 
-import com.sandstorm.internshop.entity.Customer;
-import com.sandstorm.internshop.repository.CustomerRepository;
+import com.sandstorm.internshop.entity.product.Customer;
+import com.sandstorm.internshop.repository.product.CustomerRepository;
 import com.sandstorm.internshop.security.CustomerDetailService;
 import com.sandstorm.internshop.security.CustomerDetailServiceImpl;
 import com.sandstorm.internshop.security.UserPrincipal;

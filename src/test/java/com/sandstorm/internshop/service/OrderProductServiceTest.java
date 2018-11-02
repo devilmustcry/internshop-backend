@@ -1,15 +1,15 @@
 package com.sandstorm.internshop.service;
 
-import com.sandstorm.internshop.service.OrderProduct.OrderProductService;
+import com.sandstorm.internshop.service.orderproduct.OrderProductService;
 import com.sandstorm.internshop.wrapper.Order.CreateOrderRequest;
-import com.sandstorm.internshop.entity.Customer;
-import com.sandstorm.internshop.entity.Order;
-import com.sandstorm.internshop.entity.OrderProduct;
-import com.sandstorm.internshop.entity.Product;
-import com.sandstorm.internshop.repository.OrderProductRepository;
-import com.sandstorm.internshop.service.Order.OrderService;
-import com.sandstorm.internshop.service.OrderProduct.OrderProductServiceImpl;
-import com.sandstorm.internshop.service.Product.ProductService;
+import com.sandstorm.internshop.entity.product.Customer;
+import com.sandstorm.internshop.entity.product.Order;
+import com.sandstorm.internshop.entity.product.OrderProduct;
+import com.sandstorm.internshop.entity.product.Product;
+import com.sandstorm.internshop.repository.product.OrderProductRepository;
+import com.sandstorm.internshop.service.order.OrderService;
+import com.sandstorm.internshop.service.orderproduct.OrderProductServiceImpl;
+import com.sandstorm.internshop.service.product.ProductService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

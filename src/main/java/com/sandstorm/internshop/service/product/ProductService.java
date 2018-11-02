@@ -1,7 +1,7 @@
-package com.sandstorm.internshop.service.Product;
+package com.sandstorm.internshop.service.product;
 
 //import com.sandstorm.internshop.wrapper.ProductListRequest;
-import com.sandstorm.internshop.entity.Product;
+import com.sandstorm.internshop.entity.product.Product;
 
 import java.util.List;
 

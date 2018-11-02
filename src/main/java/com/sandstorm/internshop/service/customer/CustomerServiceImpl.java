@@ -1,17 +1,12 @@
-package com.sandstorm.internshop.service.Customer;
+package com.sandstorm.internshop.service.customer;
 
-import com.sandstorm.internshop.entity.Customer;
+import com.sandstorm.internshop.entity.product.Customer;
 import com.sandstorm.internshop.exception.CustomerNotFound;
-import com.sandstorm.internshop.repository.CustomerRepository;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import com.sandstorm.internshop.repository.product.CustomerRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static java.util.Collections.emptyList;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {

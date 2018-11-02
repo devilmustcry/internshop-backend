@@ -1,19 +1,15 @@
 package com.sandstorm.internshop.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sandstorm.internshop.entity.Customer;
+import com.sandstorm.internshop.entity.product.Customer;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter

@@ -1,39 +1,42 @@
-package com.sandstorm.internshop.entity;
+package com.sandstorm.internshop.entity.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sandstorm.internshop.entity.BaseEntity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Entity(name = "orders")
+@Entity(name = "products")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Accessors(chain = true)
-public class Order extends BaseEntity<String> {
+public class Product extends BaseEntity<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
+    @JsonProperty("product_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    @JsonIgnore
-    private Customer customer;
+    @NotNull
+    @NotBlank
+    @Column
+    private String name;
 
+    @NotNull
     @Column(columnDefinition="Decimal(10,2) default '0.00'")
     private Double price;
 
-    @Column(columnDefinition="Decimal(10,2) default '0.00'")
-    private Double discount;
-
-    @Column(columnDefinition="Decimal(10,2) default '0.00'")
-    private Double netPrice;
-
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private List<OrderProduct> orderProductList;
 
 }

@@ -1,6 +1,6 @@
-package com.sandstorm.internshop.repository;
+package com.sandstorm.internshop.repository.product;
 
-import com.sandstorm.internshop.entity.Customer;
+import com.sandstorm.internshop.entity.product.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,8 +1,8 @@
-package com.sandstorm.internshop.service.Product;
+package com.sandstorm.internshop.service.product;
 
-import com.sandstorm.internshop.entity.Product;
+import com.sandstorm.internshop.entity.product.Product;
 import com.sandstorm.internshop.exception.ProductNotFound;
-import com.sandstorm.internshop.repository.ProductRepository;
+import com.sandstorm.internshop.repository.product.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

@@ -1,17 +1,14 @@
-package com.sandstorm.internshop.entity;
+package com.sandstorm.internshop.entity.product;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sandstorm.internshop.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Objects;
 
 @Entity(name = "customers")
@@ -51,7 +48,7 @@ public class Customer extends BaseEntity<String> {
 
     @Override
     public String toString() {
-        return "Customer{" +
+        return "customer{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +

@@ -1,28 +1,11 @@
 package com.sandstorm.internshop.security;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sandstorm.internshop.entity.Customer;
-import com.sandstorm.internshop.service.Customer.CustomerService;
-import com.sandstorm.internshop.service.Customer.CustomerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -74,7 +57,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 //    @Override
 //    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 //        try {
-//            Customer creds = new ObjectMapper().readValue(request.getInputStream(), Customer.class);
+//            customer creds = new ObjectMapper().readValue(request.getInputStream(), customer.class);
 //            creds = customerService.getCustomerByUsername(creds.getUsername());
 //            log.info(creds.toString());
 //            AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(creds.getUsername(), creds.getPassword(), new ArrayList<>());
@@ -91,7 +74,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 //        User authCustomer = (User) authResult.getPrincipal();
 //        String token = JWT.create()
 //                .withSubject(authCustomer.getUsername())
-//                .withSubject(((Customer) authResult.getDetails()).getId().toString())
+//                .withSubject(((customer) authResult.getDetails()).getId().toString())
 //                .sign(Algorithm.HMAC512(SECRET.getBytes()));
 //        response.addHeader(TOKEN_HEADER, TOKEN_PREFIX + token);
 //    }

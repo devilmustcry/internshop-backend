@@ -1,12 +1,12 @@
-package com.sandstorm.internshop.entity;
+package com.sandstorm.internshop.entity.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sandstorm.internshop.entity.BaseEntity;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Entity(name = "order_products")
 @Data
