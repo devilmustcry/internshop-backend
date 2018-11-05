@@ -22,3 +22,11 @@ services:
       - 80
     ports:
       - 9999:80
+  redis:
+    container_name: internshop-redis
+    image: redis:latest
+    expose:
+      - 6379
+    ports:
+      - 6379:6379
+

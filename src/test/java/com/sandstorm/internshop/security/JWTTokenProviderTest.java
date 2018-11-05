@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
+import org.springframework.util.StringUtils;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -65,8 +66,25 @@ public class JWTTokenProviderTest {
 
     @Test(expected = SignatureVerificationException.class)
     public void validateFailed() {
-
         Boolean isSuccess = jwtTokenProvider.validate(failedJWTToken);
+    }
 
+    @Test
+    public void getJwtFromRequest() {
+        String token = "Bearer ajsdkfjwoeivnawojfo210fjk39.vnj3u4qjwkefo13f3.93qkc0qojecoacjie02";
+
+        String jwt = jwtTokenProvider.getJwtFromRequest(token);
+
+        assertThat(jwt).isEqualTo("ajsdkfjwoeivnawojfo210fjk39.vnj3u4qjwkefo13f3.93qkc0qojecoacjie02");
+
+    }
+
+    @Test
+    public void getJwtFromRequestFailed() {
+        String token = "Beary ajsdkfjwoeivnawojfo210fjk39.vnj3u4qjwkefo13f3.93qkc0qojecoacjie02";
+
+        String jwt = jwtTokenProvider.getJwtFromRequest(token);
+
+        assertThat(jwt).isEqualTo(null);
     }
 }

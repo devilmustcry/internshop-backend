@@ -7,6 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Component
 @Slf4j
@@ -44,6 +47,13 @@ public class JWTTokenProvider {
                 .verify(token.replace(TOKEN_PREFIX, ""))
                 .getSubject();
         return Long.parseLong(jwt);
+    }
+
+    public String getJwtFromRequest(String bearerToken) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.replace("Bearer ", "");
+        }
+        return null;
     }
 
     public boolean validate(String token) {

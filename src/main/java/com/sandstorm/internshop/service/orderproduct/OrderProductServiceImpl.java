@@ -60,7 +60,6 @@ public class OrderProductServiceImpl implements OrderProductService {
     @Override
     public Long countProductInOrder(Order orderId) {
         Long count = orderProductRepository.countByOrder(orderId);
-        log.info(count.toString());
         return count;
     }
 

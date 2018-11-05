@@ -22,8 +22,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JWTTokenProvider tokenProvider;
 
-//    @Value("${auth.token.prefix}")
-//    private String TOKEN_PREFIX;
+    @Autowired
+    private RedisService redisService;
 
     @Autowired
     private CustomerDetailService customerDetailService;
@@ -31,8 +31,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            String jwt = getJwtFromRequest(request);
-            if (StringUtils.hasText(jwt) && tokenProvider.validate(jwt)) {
+            String jwt = tokenProvider.getJwtFromRequest(request.getHeader("Authorization"));
+            if (StringUtils.hasText(jwt) && tokenProvider.validate(jwt) && !redisService.isBlackList(jwt)) {
                 Long userId = tokenProvider.getUserIdFromJWT(jwt);
 //                UserDetails userDetails = customerDetailService.loadUserById(userId);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userId, null, new ArrayList<>());
@@ -44,38 +44,4 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-
-    private String getJwtFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.replace("Bearer ", "");
-        }
-        return null;
-    }
-
-
-//    @Override
-//    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-//        try {
-//            customer creds = new ObjectMapper().readValue(request.getInputStream(), customer.class);
-//            creds = customerService.getCustomerByUsername(creds.getUsername());
-//            log.info(creds.toString());
-//            AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(creds.getUsername(), creds.getPassword(), new ArrayList<>());
-//            authenticationToken.setDetails(creds);
-//            return authenticationManager.authenticate(authenticationToken);
-//        } catch (IOException e) {
-//            throw new RuntimeException();
-//        }
-//    }
-//
-//    @Override
-//    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-//
-//        User authCustomer = (User) authResult.getPrincipal();
-//        String token = JWT.create()
-//                .withSubject(authCustomer.getUsername())
-//                .withSubject(((customer) authResult.getDetails()).getId().toString())
-//                .sign(Algorithm.HMAC512(SECRET.getBytes()));
-//        response.addHeader(TOKEN_HEADER, TOKEN_PREFIX + token);
-//    }
 }

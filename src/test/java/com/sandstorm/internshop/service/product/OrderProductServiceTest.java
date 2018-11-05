@@ -129,4 +129,16 @@ public class OrderProductServiceTest {
         verify(productService, times(productListRequestList.size())).getProduct(any(Long.class));
         verify(orderProductRepository, times(productListRequestList.size())).save(any(OrderProduct.class));
     }
+
+    @Test
+    public void countProductInOrder() {
+        Long count = 4L;
+        when(orderProductRepository.countByOrder(any(Order.class))).thenReturn(count);
+
+        Long counted = orderProductService.countProductInOrder(new Order().setId(1L));
+
+        assertThat(counted).isEqualTo(count);
+
+        verify(orderProductRepository, times(1)).countByOrder(any(Order.class));
+    }
 }
