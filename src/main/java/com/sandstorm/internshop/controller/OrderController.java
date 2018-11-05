@@ -41,13 +41,11 @@ public class OrderController {
         Order newOrder = orderService.createOrder(customerId, orderRequest);
         newOrder = orderProductService.createOrderProducts(newOrder, productListRequests);
         String couponResult = "";
-        if (orderRequest.hasCoupon()) {
-            try {
-                Coupon coupon = couponService.getCouponByCode(orderRequest.getCouponCode());
-                newOrder = couponService.applyCoupon(newOrder, coupon);
-            } catch (CouponNotFound e) {
-                couponResult = e.getMessage();
-            }
+        try {
+            Coupon coupon = couponService.getCouponByCode(orderRequest.getCouponCode());
+            newOrder = couponService.applyCoupon(newOrder, coupon);
+        } catch (RuntimeException e) {
+            couponResult = e.getMessage();
         }
         orderService.updateOrderPrice(newOrder.getId(), newOrder);
 
