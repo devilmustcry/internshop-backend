@@ -12,4 +12,6 @@ public interface CouponService {
     Coupon useCoupon(Long id);
 
     Order applyCoupon(Order order, Coupon coupon);
+
+    Boolean validateCoupon(Coupon coupon);
 }

@@ -20,10 +20,12 @@ public abstract class BaseEntity<T> implements Serializable {
 
     @CreatedBy
     @JsonIgnore
+    @Column(name = "created_by")
     private T createdBy;
 
     @LastModifiedBy
     @JsonIgnore
+    @Column(name = "updated_by")
     private T updatedBy;
 
     @Temporal(TemporalType.TIMESTAMP)

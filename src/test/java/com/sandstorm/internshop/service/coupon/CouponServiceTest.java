@@ -3,6 +3,7 @@ package com.sandstorm.internshop.service.coupon;
 import com.sandstorm.internshop.entity.coupon.Coupon;
 import com.sandstorm.internshop.entity.coupon.CouponType;
 import com.sandstorm.internshop.repository.coupon.CouponRepository;
+import com.sandstorm.internshop.service.orderproduct.OrderProductService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +26,9 @@ public class CouponServiceTest {
     @Mock
     private CouponRepository couponRepository;
 
+    @Mock
+    private OrderProductService orderProductService;
+
     private Coupon priceCoupon;
 
     private Coupon quantityCoupon;
@@ -45,7 +49,7 @@ public class CouponServiceTest {
                 .setAvailable(5)
                 .setThreshold(10.0)
                 .setDiscount(5.0);
-        couponService = new CouponServiceImpl(couponRepository);
+        couponService = new CouponServiceImpl(couponRepository, orderProductService);
     }
 
     @Test

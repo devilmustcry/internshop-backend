@@ -29,8 +29,11 @@ public class Order extends BaseEntity<String> {
     @Column(columnDefinition="Decimal(10,2) default '0.00'")
     private Double discount;
 
-    @Column(columnDefinition="Decimal(10,2) default '0.00'")
+    @Column(columnDefinition="Decimal(10,2) default '0.00'", name = "net_price")
     private Double netPrice;
+
+    @Column(columnDefinition = "Boolean default 0", name = "is_used_coupon")
+    private Boolean isUsedCoupon;
 
     @OneToMany(mappedBy = "order")
     private List<OrderProduct> orderProductList;

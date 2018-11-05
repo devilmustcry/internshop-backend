@@ -5,6 +5,7 @@ import com.sandstorm.internshop.entity.coupon.CouponType;
 import com.sandstorm.internshop.entity.product.Order;
 import com.sandstorm.internshop.exception.CouponNotFound;
 import com.sandstorm.internshop.repository.coupon.CouponRepository;
+import com.sandstorm.internshop.service.orderproduct.OrderProductService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,8 +13,11 @@ public class CouponServiceImpl implements CouponService {
 
     private final CouponRepository couponRepository;
 
-    public CouponServiceImpl(CouponRepository couponRepository) {
+    private final OrderProductService orderProductService;
+
+    public CouponServiceImpl(CouponRepository couponRepository, OrderProductService orderProductService) {
         this.couponRepository = couponRepository;
+        this.orderProductService = orderProductService;
     }
 
     @Override
@@ -36,11 +40,31 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public Order applyCoupon(Order order, Coupon coupon) {
-        if (coupon.getCouponType().equals(CouponType.PRICE_THRESHOLD)) {
-//            if (order.getNetPrice())
-            
-        } else if (coupon.getCouponType().equals(CouponType.QUANTITY_THRESHOLD)) {
-
+        order.setIsUsedCoupon(false);
+        Double discount = order.getDiscount();
+        Double netPrice = order.getNetPrice();
+        if (this.validateCoupon(coupon)) {
+            if (coupon.getCouponType().equals(CouponType.PRICE_THRESHOLD)) {
+                if (order.getNetPrice() >= coupon.getThreshold()) {
+                    order.setDiscount(discount + coupon.getDiscount());
+                    order.setNetPrice(netPrice - coupon.getDiscount());
+                    order.setIsUsedCoupon(true);
+                    this.useCoupon(coupon.getId());
+                }
+            } else if (coupon.getCouponType().equals(CouponType.QUANTITY_THRESHOLD)) {
+                if (orderProductService.countProductInOrder(order) >= coupon.getThreshold()) {
+                    order.setDiscount(discount + coupon.getDiscount());
+                    order.setNetPrice(netPrice - coupon.getDiscount());
+                    order.setIsUsedCoupon(true);
+                    this.useCoupon(coupon.getId());
+                }
+            }
         }
+        return order;
+    }
+
+    @Override
+    public Boolean validateCoupon(Coupon coupon) {
+        return coupon.getAvailable() > 0;
     }
 }

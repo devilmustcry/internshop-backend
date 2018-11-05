@@ -13,5 +13,7 @@ public class CreateOrderResponse {
 
     private Double discount;
 
+    private Boolean isUsedCoupon;
 
+    private String couponResult;
 }

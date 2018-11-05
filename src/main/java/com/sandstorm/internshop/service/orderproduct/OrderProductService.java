@@ -8,4 +8,6 @@ import java.util.List;
 public interface OrderProductService {
 
     Order createOrderProducts(Order order, List<CreateOrderRequest.ProductListRequest> productsOrdered);
+
+    Long countProductInOrder(Order orderId);
 }

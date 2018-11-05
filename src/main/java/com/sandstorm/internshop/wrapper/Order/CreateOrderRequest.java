@@ -2,6 +2,7 @@ package com.sandstorm.internshop.wrapper.Order;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -18,5 +19,9 @@ public class CreateOrderRequest {
     public static class ProductListRequest {
         private Long productId;
         private Integer amount;
+    }
+
+    public Boolean hasCoupon() {
+        return StringUtils.hasText(couponCode);
     }
 }
