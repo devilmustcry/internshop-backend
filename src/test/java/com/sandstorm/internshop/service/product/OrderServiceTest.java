@@ -1,4 +1,4 @@
-package com.sandstorm.internshop.service;
+package com.sandstorm.internshop.service.product;
 
 import com.sandstorm.internshop.service.order.OrderService;
 import com.sandstorm.internshop.wrapper.Order.CreateOrderRequest;

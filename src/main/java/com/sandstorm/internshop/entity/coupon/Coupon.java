@@ -2,12 +2,14 @@ package com.sandstorm.internshop.entity.coupon;
 
 import com.sandstorm.internshop.entity.BaseEntity;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "coupons")
 @Data
+@Accessors(chain = true)
 public class Coupon extends BaseEntity<String> {
 
     @Id

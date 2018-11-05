@@ -1,4 +1,4 @@
-package com.sandstorm.internshop.service;
+package com.sandstorm.internshop.service.product;
 
 import com.sandstorm.internshop.entity.product.Customer;
 import com.sandstorm.internshop.repository.product.CustomerRepository;

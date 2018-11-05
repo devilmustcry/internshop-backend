@@ -32,7 +32,7 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<BaseResponse<CreateOrderResponse>> createOrder(@CurrentUser Long customerId, @RequestBody CreateOrderRequest orderRequest) {
         List<CreateOrderRequest.ProductListRequest> productListRequests = orderRequest.getProductListRequestList();
-
+//        String couponCode = orderRequest.getCouponCode();
         Order newOrder = orderService.createOrder(customerId, orderRequest);
         newOrder = orderProductService.createOrderProducts(newOrder, productListRequests);
         orderService.updateOrderPrice(newOrder.getId(), newOrder);

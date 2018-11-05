@@ -11,6 +11,9 @@ public class CreateOrderRequest {
     @JsonProperty("productList")
     private List<ProductListRequest> productListRequestList;
 
+    @JsonProperty("code")
+    private String couponCode;
+
     @Data
     public static class ProductListRequest {
         private Long productId;
