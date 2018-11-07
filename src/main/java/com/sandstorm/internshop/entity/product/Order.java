@@ -8,9 +8,10 @@ import lombok.experimental.Accessors;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity(name = "orders")
+@Entity
 @Data
 @Accessors(chain = true)
+@Table(name ="orders")
 public class Order extends BaseEntity<String> {
 
     @Id

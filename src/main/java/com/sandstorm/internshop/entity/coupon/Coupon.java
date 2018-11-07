@@ -7,7 +7,8 @@ import lombok.experimental.Accessors;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@Entity(name = "coupons")
+@Entity
+@Table(name="coupons")
 @Data
 @Accessors(chain = true)
 public class Coupon extends BaseEntity<String> {
@@ -20,30 +21,27 @@ public class Coupon extends BaseEntity<String> {
     private String code;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "coupon_type")
+    @Column(name ="coupon_type")
     private CouponType couponType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "discount_type")
+    private DiscountType discountType;
 
     @Column
     @NotNull
     private Integer available;
 
-    @Column
+    @Column(name = "price_threshold")
     @NotNull
-    private Double threshold;
+    private Double priceThreshold;
+
+    @Column(name = "quantity_threshold")
+    @NotNull
+    private Integer quantityThreshold;
 
     @Column
     @NotNull
     private Double discount;
 
-    @Override
-    public String toString() {
-        return "Coupon{" +
-                "id=" + id +
-                ", code='" + code + '\'' +
-                ", couponType=" + couponType +
-                ", available=" + available +
-                ", threshold=" + threshold +
-                ", discount=" + discount +
-                '}';
-    }
 }

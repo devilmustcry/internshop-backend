@@ -8,9 +8,10 @@ import lombok.experimental.Accessors;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@Entity(name = "order_products")
+@Entity
 @Data
 @Accessors(chain = true)
+@Table(name = "order_products")
 public class OrderProduct extends BaseEntity<String> {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

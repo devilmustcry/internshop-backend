@@ -6,6 +6,7 @@ import com.sandstorm.internshop.entity.product.Order;
 import com.sandstorm.internshop.exception.OrderNotFound;
 import com.sandstorm.internshop.repository.product.OrderRepository;
 import com.sandstorm.internshop.service.customer.CustomerService;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,8 +41,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getOrderByCustomerId(Long customerId)
-    {
+    public List<Order> getOrderByCustomerId(Long customerId) {
         return orderRepository.findAllByCustomerId(customerId);
     }
 

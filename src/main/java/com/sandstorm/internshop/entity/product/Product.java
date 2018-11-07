@@ -13,11 +13,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Entity(name = "products")
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
+@Table(name = "products")
 public class Product extends BaseEntity<String> {
 
     @Id

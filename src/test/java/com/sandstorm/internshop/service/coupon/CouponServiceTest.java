@@ -1,7 +1,6 @@
 package com.sandstorm.internshop.service.coupon;
 
 import com.sandstorm.internshop.entity.coupon.Coupon;
-import com.sandstorm.internshop.entity.coupon.CouponType;
 import com.sandstorm.internshop.entity.product.Order;
 import com.sandstorm.internshop.exception.CouponNotAvailable;
 import com.sandstorm.internshop.exception.CouponNotFound;
@@ -12,7 +11,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
@@ -42,17 +40,17 @@ public class CouponServiceTest {
     public void setup() {
         priceCoupon = new Coupon()
                 .setCode("TEST1234")
-                .setCouponType(CouponType.PRICE_THRESHOLD)
+//                .setCouponType(CouponType.PRICE_THRESHOLD)
                 .setId(1L)
                 .setAvailable(5)
-                .setThreshold(10.0)
+//                .setThreshold(10.0)
                 .setDiscount(5.0);
         quantityCoupon = new Coupon()
                 .setCode("TEST4321")
-                .setCouponType(CouponType.QUANTITY_THRESHOLD)
+//                .setCouponType(CouponType.QUANTITY_THRESHOLD)
                 .setId(1L)
                 .setAvailable(5)
-                .setThreshold(10.0)
+//                .setThreshold(10.0)
                 .setDiscount(5.0);
         couponService = new CouponServiceImpl(couponRepository, orderProductService);
         mockCouponService = spy(couponService);

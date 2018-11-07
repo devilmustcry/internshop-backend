@@ -11,10 +11,14 @@ import com.sandstorm.internshop.entity.product.Order;
 import com.sandstorm.internshop.service.orderproduct.OrderProductService;
 import com.sandstorm.internshop.service.order.OrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.PersistenceUnitUtil;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -61,7 +65,8 @@ public class OrderController {
 
     @GetMapping
     public BaseResponse<List<Order>> getOrderByCustomer(@CurrentUser Long customerId) {
-        return new BaseResponse<List<Order>>(HttpStatus.OK, "Get order By customer", orderService.getOrderByCustomerId(customerId));
-
+        List<Order> responseOrder = orderService.getOrderByCustomerId(customerId);
+//        PersistenceUnitUtil
+        return new BaseResponse<List<Order>>(HttpStatus.OK, "Get order By customer", responseOrder);
     }
 }

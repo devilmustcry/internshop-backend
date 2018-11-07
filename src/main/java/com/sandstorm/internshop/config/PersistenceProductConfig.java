@@ -49,7 +49,6 @@ public class PersistenceProductConfig {
 
     @Bean
     public DataSource productDataSource() {
-
         DriverManagerDataSource dataSource
                 = new DriverManagerDataSource();
         dataSource.setDriverClassName(
@@ -57,7 +56,6 @@ public class PersistenceProductConfig {
         dataSource.setUrl(env.getProperty("product.jdbc.url"));
         dataSource.setUsername(env.getProperty("jdbc.user"));
         dataSource.setPassword(env.getProperty("jdbc.pass"));
-
         return dataSource;
     }
 

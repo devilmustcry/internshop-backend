@@ -11,6 +11,7 @@ import com.sandstorm.internshop.service.product.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,6 +37,7 @@ public class OrderProductServiceImpl implements OrderProductService {
     public Order createOrderProducts(Order order, List<CreateOrderRequest.ProductListRequest> productsOrdered) {
         Double discount = 0.0;
         Double price = 0.0;
+        List<OrderProduct> orderProducts = new ArrayList<>();
         for(CreateOrderRequest.ProductListRequest productOrdered : productsOrdered) {
             OrderProduct orderProduct = new OrderProduct();
             Product product = productService.getProduct(productOrdered.getProductId());
@@ -45,6 +47,7 @@ public class OrderProductServiceImpl implements OrderProductService {
             Double productPrice = product.getPrice() * productOrdered.getAmount();
             orderProduct.setNetPrice(price);
             price+=productPrice;
+            orderProducts.add(orderProduct);
             this.orderProductRepository.save(orderProduct);
         }
         order.setPrice(price);
@@ -54,6 +57,7 @@ public class OrderProductServiceImpl implements OrderProductService {
         }
         order.setDiscount(discount);
         order.setNetPrice(price - discount);
+        order.setOrderProductList(orderProducts);
         return order;
     }
 

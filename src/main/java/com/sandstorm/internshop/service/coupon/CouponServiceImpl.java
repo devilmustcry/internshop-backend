@@ -1,7 +1,7 @@
 package com.sandstorm.internshop.service.coupon;
 
 import com.sandstorm.internshop.entity.coupon.Coupon;
-import com.sandstorm.internshop.entity.coupon.CouponType;
+import com.sandstorm.internshop.entity.coupon.factory.CouponStrategyFactory;
 import com.sandstorm.internshop.entity.product.Order;
 import com.sandstorm.internshop.exception.CouponNotAvailable;
 import com.sandstorm.internshop.exception.CouponNotFound;
@@ -39,28 +39,13 @@ public class CouponServiceImpl implements CouponService {
         }).orElseThrow(() -> new CouponNotFound("Cannot find coupon with id : " + id));
     }
 
+
     @Override
     public Order applyCoupon(Order order, Coupon coupon) {
-        Double discount = order.getDiscount();
-        Double netPrice = order.getNetPrice();
         try {
-            if (this.validateCoupon(coupon)) {
-                order.setIsUsedCoupon(false);
-                if (coupon.getCouponType().equals(CouponType.PRICE_THRESHOLD)) {
-                    if (order.getNetPrice() >= coupon.getThreshold()) {
-                        order.setDiscount(discount + coupon.getDiscount())
-                                .setNetPrice(netPrice - coupon.getDiscount())
-                                .setIsUsedCoupon(true);
-                        this.useCoupon(coupon.getId());
-                    }
-                } else if (coupon.getCouponType().equals(CouponType.QUANTITY_THRESHOLD)) {
-                    if (orderProductService.countProductInOrder(order) >= coupon.getThreshold()) {
-                        order.setDiscount(discount + coupon.getDiscount())
-                                .setNetPrice(netPrice - coupon.getDiscount())
-                                .setIsUsedCoupon(true);
-                        this.useCoupon(coupon.getId());
-                    }
-                }
+            if(this.validateCoupon(coupon)) {
+                order = CouponStrategyFactory.create(coupon.getCouponType(), coupon.getDiscountType()).discount(order, coupon);
+                this.useCoupon(coupon.getId());
             }
         } catch (RuntimeException e) {
             return order;
