@@ -5,6 +5,7 @@ import com.sandstorm.internshop.exception.CustomerNotFound;
 import com.sandstorm.internshop.repository.product.CustomerRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public Customer getCustomerByUsername(String username) {
         return customerRepository.findByUsername(username).orElseThrow(() -> new CustomerNotFound("Cannot find customer with username: " + username));
     }

@@ -6,6 +6,7 @@ import com.sandstorm.internshop.entity.product.Order;
 import com.sandstorm.internshop.exception.CouponNotAvailable;
 import com.sandstorm.internshop.exception.CouponNotFound;
 import com.sandstorm.internshop.repository.coupon.CouponRepository;
+import com.sandstorm.internshop.service.coupon.strategy.CouponStrategy;
 import com.sandstorm.internshop.service.orderproduct.OrderProductService;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,8 @@ public class CouponServiceImpl implements CouponService {
     public Order applyCoupon(Order order, Coupon coupon) {
         try {
             if(this.validateCoupon(coupon)) {
-                order = CouponStrategyFactory.create(coupon.getCouponType(), coupon.getDiscountType()).discount(order, coupon);
+                CouponStrategy strategy = CouponStrategyFactory.create(coupon.getCouponType(), coupon.getDiscountType());
+                order = strategy.discount(order, coupon);
                 this.useCoupon(coupon.getId());
             }
         } catch (RuntimeException e) {

@@ -42,6 +42,7 @@ public class PersistenceProductConfig {
                 env.getProperty("hibernate.hbm2ddl.auto"));
         properties.put("hibernate.dialect",
                 env.getProperty("hibernate.dialect"));
+        properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
         em.setJpaPropertyMap(properties);
 
         return em;

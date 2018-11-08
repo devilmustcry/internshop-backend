@@ -4,6 +4,9 @@ import com.sandstorm.internshop.entity.coupon.CouponType;
 import com.sandstorm.internshop.entity.coupon.DiscountType;
 import com.sandstorm.internshop.service.coupon.strategy.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CouponStrategyFactory {
 
     public static CouponStrategy create(CouponType couponType, DiscountType discountType) {
